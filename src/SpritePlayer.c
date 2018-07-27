@@ -12,20 +12,26 @@ void Start_SPRITE_PLAYER() {
 }
 
 void Update_SPRITE_PLAYER() {
-	if(KEY_PRESSED(J_LEFT)) {
-		THIS->x --;
-		SetSpriteAnim(THIS, anim_walk, 15);
-		SPRITE_SET_VMIRROR(THIS);
+	if (KEY_PRESSED(J_LEFT) || (KEY_PRESSED(J_RIGHT))) {
+		if (KEY_PRESSED(J_LEFT)) {
+			THIS->x--;
+			SetSpriteAnim(THIS, anim_walk, 15);
+			SPRITE_SET_VMIRROR(THIS);
+		}
+		if (KEY_PRESSED(J_RIGHT)) {
+			THIS->x++;
+			SetSpriteAnim(THIS, anim_walk, 15);
+			THIS->flags = 0u;
+			SPRITE_UNSET_VMIRROR(THIS);
+		}
 	}
-	if(KEY_PRESSED(J_RIGHT)) {
-		THIS->x ++;
-		SetSpriteAnim(THIS, anim_walk, 15);
-		THIS->flags = 0u;
-		SPRITE_UNSET_VMIRROR(THIS);
+	else {
+		SetSpriteAnim(THIS, anim_idle, 1);
 	}
-	if(KEY_PRESSED(BUTTON_B)) {
+	/* if(KEY_TICKED(J_A)) {
+		// SALTO O ALGO
 		
-	}
+	} */
 }
 
 void Destroy_SPRITE_PLAYER() {
