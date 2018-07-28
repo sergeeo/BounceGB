@@ -10,9 +10,7 @@ typedef enum {
 } STATE;
 
 typedef enum {
-	SPRITE_PLAYER,
-
-	SPRITE_MONECO,
+	SPRITE_PLAYERLITTLE,
 	N_SPRITE_TYPES
 } SPRITE_TYPE;
 

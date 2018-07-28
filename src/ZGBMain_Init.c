@@ -5,9 +5,9 @@ UINT8 init_bank = 1;
 
 #include "StateGame.h"
 
-#include "SpritePlayer.h"
+#include "SpritePlayerLittle.h"
 
-#include "../res/src/player.h"
+#include "../res/src/playerlittle.h"
 
 UINT8 next_state = STATE_GAME;
 
@@ -19,5 +19,5 @@ void InitStates() {
 }
 
 void InitSprites() {
-	INIT_SPRITE(SPRITE_PLAYER, player, 3, FRAME_16x16, 4);
+	INIT_SPRITE(SPRITE_PLAYERLITTLE, playerlittle, 3, FRAME_8x16, 4);
 }

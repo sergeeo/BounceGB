@@ -1,9 +1,9 @@
 #pragma bank 2
-#include "SpritePlayer.h"
+#include "SpritePlayerLittle.h"
 #include "Keys.h"
 #include "SpriteManager.h"
 
-UINT8 bank_SPRITE_PLAYER = 2;
+UINT8 bank_SPRITE_PLAYERLITTLE = 2;
 
 const UINT8 anim_idle[] = {1, 0};
 const UINT8 anim_walk[] = {4, 0, 1, 2, 3};
@@ -16,7 +16,7 @@ struct PlayerCustomData {
 
 //typedef struct PlayerCustomData;
 
-void Start_SPRITE_PLAYER() {
+void Start_SPRITE_PLAYERLITTLE() {
 
 	struct PlayerCustomData* data = (struct PlayerCustomData*)THIS->custom_data;
 
@@ -28,7 +28,7 @@ void Start_SPRITE_PLAYER() {
 	THIS->coll_h = 16u;
 }
 
-void Update_SPRITE_PLAYER() {
+void Update_SPRITE_PLAYERLITTLE() {
 
 	struct PlayerCustomData* data = (struct PlayerCustomData*)THIS->custom_data;
 
@@ -58,5 +58,5 @@ void Update_SPRITE_PLAYER() {
 	data->yvel.w = data->yvel.w + (INT16)(16 << delta_time);
 }
 
-void Destroy_SPRITE_PLAYER() {
+void Destroy_SPRITE_PLAYERLITTLE() {
 }
