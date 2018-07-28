@@ -3,12 +3,12 @@
 #include "Keys.h"
 #include "SpriteManager.h"
 
-#define YVELMAX 2
+#define YVELMAX 3
 
 UINT8 bank_SPRITE_PLAYERLITTLE = 2;
 
-const UINT8 anim_idle[] = {1, 0};
-const UINT8 anim_walk[] = {4, 0, 1, 2, 3};
+const UINT8 anim_walk[] = { 4, 0, 1, 2, 3};
+const UINT8 anim_die[] = { 3, 4, 5, 6 };
 
 struct PlayerCustomData {
 	fixed yvel;
@@ -41,12 +41,11 @@ void Update_SPRITE_PLAYERLITTLE() {
 	if (KEY_PRESSED(J_LEFT) || (KEY_PRESSED(J_RIGHT))) {
 		if (KEY_PRESSED(J_LEFT)) {
 			data->xvel = -1;
-			SetSpriteAnim(THIS, anim_walk, 15);
+			
 			SPRITE_SET_VMIRROR(THIS);
 		}
 		if (KEY_PRESSED(J_RIGHT)) {
 			data->xvel = 1;
-			SetSpriteAnim(THIS, anim_walk, 15);
 			THIS->flags = 0u;
 			SPRITE_UNSET_VMIRROR(THIS);
 		}
@@ -54,9 +53,9 @@ void Update_SPRITE_PLAYERLITTLE() {
 	else {
 		SetSpriteAnim(THIS, anim_idle, 1);
 	}
-	/* if(KEY_TICKED(J_A)) {
-		// SALTO O ALGO ¿CAMBIO DE GRAVEDAD?
-	} */
+
+	// Animation
+	SetSpriteAnim(THIS, anim_walk, 15);
 
 	// Gravity
 	data->yvel.w = data->yvel.w + (INT16)(16 << delta_time);
