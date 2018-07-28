@@ -1,6 +1,6 @@
 /*
 
- SRC/PLAYERLITTLE.H
+ SRC/EXPLOSION.H
 
  Include File.
 
@@ -24,8 +24,8 @@
 
 
 /* Bank of tiles. */
-#define playerlittleBank 0
+#define explosionBank 0
 /* Start of tile array. */
-extern unsigned char playerlittle[];
+extern unsigned char explosion[];
 
-/* End of SRC/PLAYERLITTLE.H */
+/* End of SRC/EXPLOSION.H */

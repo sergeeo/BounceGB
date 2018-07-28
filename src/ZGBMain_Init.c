@@ -6,8 +6,10 @@ UINT8 init_bank = 1;
 #include "StateGame.h"
 
 #include "SpritePlayerLittle.h"
+#include "SpriteExplosion.h"
 
 #include "../res/src/playerlittle.h"
+#include "../res/src/explosion.h"
 
 UINT8 next_state = STATE_GAME;
 
@@ -20,4 +22,5 @@ void InitStates() {
 
 void InitSprites() {
 	INIT_SPRITE(SPRITE_PLAYERLITTLE, playerlittle, 3, FRAME_8x16, 4);
+	INIT_SPRITE(SPRITE_EXPLOSION, explosion, 3, FRAME_8x16, 4);
 }

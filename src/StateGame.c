@@ -13,7 +13,7 @@ extern UINT8 n_sprite_types;
 
 // 2 is floor, 3 left wall, 4 right wall, 5 ceiling
 // 6 7 8 and 9 are corners
-UINT8 collision_tiles[] = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0 };
+UINT8 collision_tiles[] = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0 };
 
 void Start_STATE_GAME() {
 	UINT8 i;
@@ -26,7 +26,7 @@ void Start_STATE_GAME() {
 
 	scroll_target = SpriteManagerAdd(SPRITE_PLAYERLITTLE, 50, 50);
 
-	InitScrollTiles(0, 14, tiles, 3);
+	InitScrollTiles(0, 16, tiles, 3);
 	InitScroll(mapWidth, mapHeight, map, collision_tiles, 0, 3);
 	SHOW_BKG;
 }
