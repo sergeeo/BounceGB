@@ -5,10 +5,13 @@
 #include "ZGBMain.h"
 #include "Keys.h"
 #include "Math.h"
+#include "Scroll.h"
 
 #define YVELMAX 2
 #define LATERALIMPULSE (3 << 8)
-// #define MINXVELOCITY 5
+#define MINXVELOCITY 32
+#define HORIZONTALRESISTANCE 14
+#define VERTICALBOUNCE 600
 
 UINT8 bank_SPRITE_PLAYERLITTLE = 2;
 
@@ -40,23 +43,22 @@ void Update_SPRITE_PLAYERLITTLE() {
 	UINT8 tile_collision;
 	INT8 incx = 0;
 	INT8 incy = 0;
+	UINT8 backgroundTile = 0;
 
 	// Input and horizontal speed
 	if (KEY_TICKED(J_LEFT)) {
-		//data->xvel.b.h = -1;
 			
 		SPRITE_SET_VMIRROR(THIS);
 
-		if (data->xvel >= -32) {
+		if (data->xvel >= -MINXVELOCITY) {
 			data->xvel = -LATERALIMPULSE;
 		}
 	}
 	if (KEY_TICKED(J_RIGHT)) {
-		//data->xvel.b.h = 1;
 
 		SPRITE_UNSET_VMIRROR(THIS);
 
-		if (data->xvel <= 32) {
+		if (data->xvel <= MINXVELOCITY) {
 			data->xvel = LATERALIMPULSE;
 		}
 	}
@@ -72,7 +74,6 @@ void Update_SPRITE_PLAYERLITTLE() {
 	}
 	data->ygrav += 14;
 
-
 	// Horizontal Force
 	data->xaccum.w += data->xvel;
 	if (data->xaccum.b.h != 0) {
@@ -81,29 +82,17 @@ void Update_SPRITE_PLAYERLITTLE() {
 	}
 
 	if (data->xvel > 0) {
-		data->xvel = data->xvel - 14;
+		data->xvel = data->xvel - HORIZONTALRESISTANCE;
 		if (data->xvel < 0) {
 			data->xvel = 0;
 		}
 	}
 	else {
-		data->xvel = data->xvel + 14;
+		data->xvel = data->xvel + HORIZONTALRESISTANCE;
 		if (data->xvel > 0) {
 			data->xvel = 0;
 		}
 	}
-
-	// Clamping vertical velocity
-	//signedyvel = (INT8)data->yvel.b.h;
-
-	//if (signedyvel <= -YVELMAX) {
-	//	data->yvel.b.h = -YVELMAX;
-	//	data->yvel.b.l = 0u;
-	//}
-	//else if (signedyvel >= YVELMAX) {
-	//	data->yvel.b.h = YVELMAX;
-	//	data->yvel.b.l = 0u;
-	//}
 
 	// Collisions and translation
 
@@ -111,6 +100,10 @@ void Update_SPRITE_PLAYERLITTLE() {
 	tile_collision = TranslateSprite(THIS, 0, incy);
 	if (tile_collision != 0)
 	{
+		// Goal
+		if ((tile_collision >= 19) && (tile_collision <= 22)) {
+			SetState(STATE_GAME);
+		}
 		// Spikes
 		if ((tile_collision == 14) || (tile_collision == 15)) {
 			SpriteManagerAdd(SPRITE_EXPLOSION, THIS->x, THIS->y);
@@ -120,23 +113,28 @@ void Update_SPRITE_PLAYERLITTLE() {
 		if (data->ygrav < 0) {
 			data->ygrav = -data->ygrav;
 		} else {
-			data->ygrav = -600;
+			data->ygrav = -VERTICALBOUNCE;
 		}
-
-		
 	}
 	// Horizontal
 	tile_collision = TranslateSprite(THIS, incx, 0);
-	if (tile_collision != 0)
+	if ((tile_collision != 0))
 	{
+		// Goal
+		if ((tile_collision >= 19) && (tile_collision <= 22)) {
+			SetState(STATE_GAME);
+		}
 		if ((tile_collision == 14) || (tile_collision == 15)) {
 			SpriteManagerAdd(SPRITE_EXPLOSION, THIS->x, THIS->y);
 			SpriteManagerRemoveSprite(THIS);
 		}
 		data->xvel = -data->xvel;
-
 	}
-	
+
+	/* backgroundTile = GetScrollTile(THIS->x + 4, THIS->y + 12);
+	if ((backgroundTile >= 19) && (backgroundTile <= 22)) {
+		SetState(STATE_GAME);
+	} */
 }
 
 void Destroy_SPRITE_PLAYERLITTLE() {
