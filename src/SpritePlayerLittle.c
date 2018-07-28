@@ -85,14 +85,7 @@ void Update_SPRITE_PLAYERLITTLE() {
 			data->xvel = 0;
 		}
 	}
-	//if ((incx < 0) && (incx > -MINXVELOCITY)) {
-	//	incx = -MINXVELOCITY;
-	//}
-	//if ((incx > 0) && (incx < MINXVELOCITY)) {
-	//	incx = MINXVELOCITY;
-	//}
 
-	
 	// Clamping vertical velocity
 	signedyvel = (INT8)data->yvel.b.h;
 
@@ -114,9 +107,11 @@ void Update_SPRITE_PLAYERLITTLE() {
 		// Spikes
 		if ((tile_collision == 14) || (tile_collision == 15)) {
 			SpriteManagerAdd(SPRITE_EXPLOSION, THIS->x, THIS->y);
-			// SpriteManagerRemoveSprite(THIS);
+			SpriteManagerRemoveSprite(THIS);
 		}
+		// THIS WORKS
 		data->yvel.w = -data->yvel.w;
+
 		// Back to previous position and move in different direction
 		// TranslateSprite(THIS, 0, data->yvel.b.h);
 		// TranslateSprite(THIS, 0, data->yvel.b.h);
@@ -127,7 +122,7 @@ void Update_SPRITE_PLAYERLITTLE() {
 	{
 		if ((tile_collision == 14) || (tile_collision == 15)) {
 			SpriteManagerAdd(SPRITE_EXPLOSION, THIS->x, THIS->y);
-			// SpriteManagerRemoveSprite(THIS);
+			SpriteManagerRemoveSprite(THIS);
 		}
 		data->xvel = -data->xvel;
 		// Back to previous position and move in different direction
@@ -138,4 +133,5 @@ void Update_SPRITE_PLAYERLITTLE() {
 }
 
 void Destroy_SPRITE_PLAYERLITTLE() {
+	
 }

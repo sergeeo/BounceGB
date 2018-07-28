@@ -1,6 +1,7 @@
 #pragma bank 2
 #include "SpriteExplosion.h"
 #include "SpriteManager.h"
+#include "ZGBMain.h"
 
 UINT8 bank_SPRITE_EXPLOSION = 2;
 
@@ -15,4 +16,5 @@ void Update_SPRITE_EXPLOSION() {
 	}
 }
 void Destroy_SPRITE_EXPLOSION() {
+	SetState(STATE_GAME);
 }

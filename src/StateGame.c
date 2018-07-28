@@ -17,6 +17,7 @@ UINT8 collision_tiles[] = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0 };
 
 void Start_STATE_GAME() {
 	UINT8 i;
+	UINT16 startX, startY;
 
 	SPRITES_8x16;
 	for(i = 0; i != n_sprite_types; ++ i) {
@@ -24,9 +25,10 @@ void Start_STATE_GAME() {
 	}
 	SHOW_SPRITES;
 
-	scroll_target = SpriteManagerAdd(SPRITE_PLAYERLITTLE, 50, 50);
+	ScrollFindTile(mapWidth, map, 3, 18, 0, 0, mapWidth, mapHeight, &startX, &startY);
+	scroll_target = SpriteManagerAdd(SPRITE_PLAYERLITTLE, startX<<3, startY<<3);
 
-	InitScrollTiles(0, 16, tiles, 3);
+	InitScrollTiles(0, 19, tiles, 3);
 	InitScroll(mapWidth, mapHeight, map, collision_tiles, 0, 3);
 	SHOW_BKG;
 }
