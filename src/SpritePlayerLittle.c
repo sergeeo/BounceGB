@@ -3,7 +3,7 @@
 #include "Keys.h"
 #include "SpriteManager.h"
 
-#define YVELMAX 6
+#define YVELMAX 2
 
 UINT8 bank_SPRITE_PLAYERLITTLE = 2;
 
@@ -14,7 +14,8 @@ struct PlayerCustomData {
 	fixed yvel;
 	INT8 xvel;
 	UINT8 tile_collision;
-	UINT8 initx;
+	UINT8 safex;
+	UINT8 safey;
 };
 
 void Start_SPRITE_PLAYERLITTLE() {
@@ -36,6 +37,7 @@ void Update_SPRITE_PLAYERLITTLE() {
 	INT8 currentYVel = 0;
 	INT8 signedyvel = (INT8)data->yvel.b.h;
 
+	// Input
 	if (KEY_PRESSED(J_LEFT) || (KEY_PRESSED(J_RIGHT))) {
 		if (KEY_PRESSED(J_LEFT)) {
 			data->xvel = -1;
@@ -56,21 +58,12 @@ void Update_SPRITE_PLAYERLITTLE() {
 		// SALTO O ALGO ¿CAMBIO DE GRAVEDAD?
 	} */
 
-	if (data->tile_collision != 0u) {
-		if (data->tile_collision == 2u || data->tile_collision == 5u)
-		{
-			data->yvel.w = -data->yvel.w;
-		}
-		if (data->tile_collision == 3u || data->tile_collision == 4u)
-		{
-			data->xvel = -data->xvel;
-		}
-	}
-
+	// Gravity
 	data->yvel.w = data->yvel.w + (INT16)(16 << delta_time);
+
+	// Clamping vertical velocity
 	signedyvel = (INT8)data->yvel.b.h;
-	// Clamping velocity
-	
+
 	if (signedyvel <= -YVELMAX) {
 		data->yvel.b.h = -YVELMAX;
 		data->yvel.b.l = 0u;
@@ -80,7 +73,27 @@ void Update_SPRITE_PLAYERLITTLE() {
 		data->yvel.b.l = 0u;
 	}
 
-	data->tile_collision = TranslateSprite(THIS, data->xvel, data->yvel.b.h);
+	// Collisions and translation
+
+	// Vertical
+	data->tile_collision = TranslateSprite(THIS, 0, data->yvel.b.h);
+	if (data->tile_collision != 0)
+	{
+		data->yvel.w = -data->yvel.w;
+		TranslateSprite(THIS, 0, data->yvel.b.h);
+		TranslateSprite(THIS, 0, data->yvel.b.h);
+	}
+	// Horizontal
+	data->tile_collision = TranslateSprite(THIS, data->xvel, 0);
+	if (data->tile_collision != 0)
+	{
+		data->xvel = -data->xvel;
+		TranslateSprite(THIS, data->xvel, 0);
+		TranslateSprite(THIS, data->xvel, 0);
+	}
+
+	// Update collision and translate
+	// data->tile_collision = TranslateSprite(THIS, data->xvel, data->yvel.b.h);
 }
 
 void Destroy_SPRITE_PLAYERLITTLE() {
