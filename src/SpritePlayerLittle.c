@@ -1,9 +1,9 @@
 #pragma bank 2
 #include "SpritePlayerLittle.h"
 #include "SpriteExplosion.h"
-#include "Keys.h"
 #include "SpriteManager.h"
 #include "ZGBMain.h"
+#include "Keys.h"
 #include "Math.h"
 
 #define YVELMAX 2
@@ -15,7 +15,8 @@ UINT8 bank_SPRITE_PLAYERLITTLE = 2;
 const UINT8 anim_walk[] = { 4, 0, 1, 2, 3};
 
 struct PlayerCustomData {
-	fixed yvel;
+	INT16 ygrav;
+	fixed yaccum;
 	fixed xaccum;
 	INT16 xvel;
 };
@@ -24,7 +25,7 @@ void Start_SPRITE_PLAYERLITTLE() {
 
 	struct PlayerCustomData* data = (struct PlayerCustomData*)THIS->custom_data;
 	data->xvel = 0;
-	data->yvel.w = 0;
+	data->ygrav = 0;
 
 	THIS->coll_x = 0u;
 	THIS->coll_y = 0u;
@@ -36,9 +37,9 @@ void Update_SPRITE_PLAYERLITTLE() {
 
 	struct PlayerCustomData* data = (struct PlayerCustomData*)THIS->custom_data;
 	INT8 currentYVel = 0;
-	INT8 signedyvel = (INT8)data->yvel.b.h;
 	UINT8 tile_collision;
 	INT8 incx = 0;
+	INT8 incy = 0;
 
 	// Input and horizontal speed
 	if (KEY_TICKED(J_LEFT)) {
@@ -64,7 +65,13 @@ void Update_SPRITE_PLAYERLITTLE() {
 	SetSpriteAnim(THIS, anim_walk, 15);
 
 	// Gravity
-	data->yvel.w = data->yvel.w + (INT16)(16 << delta_time);
+	data->yaccum.w += data->ygrav;
+	if (data->yaccum.b.h != 0) {
+		incy = data->yaccum.b.h;
+		data->yaccum.b.h = 0;
+	}
+	data->ygrav += 14;
+
 
 	// Horizontal Force
 	data->xaccum.w += data->xvel;
@@ -87,21 +94,21 @@ void Update_SPRITE_PLAYERLITTLE() {
 	}
 
 	// Clamping vertical velocity
-	signedyvel = (INT8)data->yvel.b.h;
+	//signedyvel = (INT8)data->yvel.b.h;
 
-	if (signedyvel <= -YVELMAX) {
-		data->yvel.b.h = -YVELMAX;
-		data->yvel.b.l = 0u;
-	}
-	else if (signedyvel >= YVELMAX) {
-		data->yvel.b.h = YVELMAX;
-		data->yvel.b.l = 0u;
-	}
+	//if (signedyvel <= -YVELMAX) {
+	//	data->yvel.b.h = -YVELMAX;
+	//	data->yvel.b.l = 0u;
+	//}
+	//else if (signedyvel >= YVELMAX) {
+	//	data->yvel.b.h = YVELMAX;
+	//	data->yvel.b.l = 0u;
+	//}
 
 	// Collisions and translation
 
 	// Vertical
-	tile_collision = TranslateSprite(THIS, 0, data->yvel.b.h);
+	tile_collision = TranslateSprite(THIS, 0, incy);
 	if (tile_collision != 0)
 	{
 		// Spikes
@@ -109,12 +116,14 @@ void Update_SPRITE_PLAYERLITTLE() {
 			SpriteManagerAdd(SPRITE_EXPLOSION, THIS->x, THIS->y);
 			SpriteManagerRemoveSprite(THIS);
 		}
-		// THIS WORKS
-		data->yvel.w = -data->yvel.w;
+		
+		if (data->ygrav < 0) {
+			data->ygrav = -data->ygrav;
+		} else {
+			data->ygrav = -600;
+		}
 
-		// Back to previous position and move in different direction
-		// TranslateSprite(THIS, 0, data->yvel.b.h);
-		// TranslateSprite(THIS, 0, data->yvel.b.h);
+		
 	}
 	// Horizontal
 	tile_collision = TranslateSprite(THIS, incx, 0);
@@ -125,9 +134,7 @@ void Update_SPRITE_PLAYERLITTLE() {
 			SpriteManagerRemoveSprite(THIS);
 		}
 		data->xvel = -data->xvel;
-		// Back to previous position and move in different direction
-		// TranslateSprite(THIS, data->xvel.b.h, 0);
-		// TranslateSprite(THIS, data->xvel.b.h, 0);
+
 	}
 	
 }
