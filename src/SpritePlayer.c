@@ -8,10 +8,30 @@ UINT8 bank_SPRITE_PLAYER = 2;
 const UINT8 anim_idle[] = {1, 0};
 const UINT8 anim_walk[] = {4, 0, 1, 2, 3};
 
+struct PlayerCustomData {
+	fixed yvel;
+	UINT8 tile_collision;
+	UINT8 initx;
+};
+
+//typedef struct PlayerCustomData;
+
 void Start_SPRITE_PLAYER() {
+
+	struct PlayerCustomData* data = (struct PlayerCustomData*)THIS->custom_data;
+
+	data->yvel.w = 0;
+
+	THIS->coll_x = 0u;
+	THIS->coll_y = 0u;
+	THIS->coll_w = 16u;
+	THIS->coll_h = 16u;
 }
 
 void Update_SPRITE_PLAYER() {
+
+	struct PlayerCustomData* data = (struct PlayerCustomData*)THIS->custom_data;
+
 	if (KEY_PRESSED(J_LEFT) || (KEY_PRESSED(J_RIGHT))) {
 		if (KEY_PRESSED(J_LEFT)) {
 			THIS->x--;
@@ -32,6 +52,10 @@ void Update_SPRITE_PLAYER() {
 		// SALTO O ALGO
 		
 	} */
+
+	TranslateSprite(THIS, 0u, data->yvel.b.h);
+
+	data->yvel.w = data->yvel.w + (INT16)(16 << delta_time);
 }
 
 void Destroy_SPRITE_PLAYER() {
