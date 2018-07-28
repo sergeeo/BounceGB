@@ -25,7 +25,7 @@ void Start_STATE_GAME() {
 
 	scroll_target = SpriteManagerAdd(SPRITE_PLAYERLITTLE, 50, 50);
 
-	InitScrollTiles(0, 10, tiles, 3);
+	InitScrollTiles(0, 14, tiles, 3);
 	InitScroll(mapWidth, mapHeight, map, collision_tiles, 0, 3);
 	SHOW_BKG;
 }

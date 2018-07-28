@@ -3,7 +3,7 @@
 #include "Keys.h"
 #include "SpriteManager.h"
 
-#define YVELMAX 3
+#define YVELMAX 6
 
 UINT8 bank_SPRITE_PLAYERLITTLE = 2;
 
