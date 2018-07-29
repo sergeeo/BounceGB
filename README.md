@@ -4,6 +4,6 @@ This is my project for **ZGBJAM**! **ZGBJAM** is a 48h game jam where you have t
 
 The theme for this edition of the jam was **BOUNCE**. You can check [all jam games here](https://itch.io/jam/zgbjam)!
 
-The game, in its jam version, is damned hard. There's plenty of work to do in both art and design. I'd like
+The game, in its jam version, is damned hard. There's plenty of work to do in both art and design. I'd like to work a little bit more on it... Let's see if I find the time!
 
 Thanks to David, Ulises, Carlos, Dani and Zalo for sharing the experience with me!
