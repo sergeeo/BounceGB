@@ -103,6 +103,7 @@ void Update_SPRITE_PLAYERLITTLE() {
 	{
 		// Goal
 		if ((tile_collision >= 19) && (tile_collision <= 22)) {
+			level++;
 			SetState(STATE_GAME);
 		}
 		// Spikes

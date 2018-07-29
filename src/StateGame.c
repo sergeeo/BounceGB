@@ -14,8 +14,8 @@ UINT8 bank_STATE_GAME = 2;
 
 extern UINT8 n_sprite_types;
 
-UINT8 lifes = 5;
-UINT8 level = 1;
+extern UINT8 lifes;
+extern UINT8 level;
 
 // 2 is floor, 3 left wall, 4 right wall, 5 ceiling
 // 6 7 8 and 9 are corners
@@ -39,7 +39,7 @@ void Start_STATE_GAME() {
 		InitScroll(mapWidth, mapHeight, map, collision_tiles, 0, 3);
 		SHOW_BKG;
 	}
-	if (level == 2) {
+	if (level == 3) {
 		ScrollFindTile(map2Width, map2, 3, 18, 0, 0, map2Width, map2Height, &startX, &startY);
 		scroll_target = SpriteManagerAdd(SPRITE_PLAYERLITTLE, startX << 3, startY << 3);
 
@@ -47,7 +47,7 @@ void Start_STATE_GAME() {
 		InitScroll(map2Width, map2Height, map2, collision_tiles, 0, 3);
 		SHOW_BKG;
 	}
-	if (level == 3) {
+	if (level == 2) {
 		ScrollFindTile(map3Width, map3, 3, 18, 0, 0, map3Width, map3Height, &startX, &startY);
 		scroll_target = SpriteManagerAdd(SPRITE_PLAYERLITTLE, startX << 3, startY << 3);
 

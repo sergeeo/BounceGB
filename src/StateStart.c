@@ -12,6 +12,8 @@ UINT8 bank_STATE_START = 2;
 #include "Keys.h"
 
 extern UINT8 n_sprite_types;
+UINT8 lifes;
+UINT8 level;
 
 void PrintText() {
 	PRINT_POS(4, 13);
@@ -21,6 +23,9 @@ void PrintText() {
 }
 
 void Start_STATE_START() {
+	lifes = 5;
+	level = 1;
+
 	InitScrollTiles(0, 104, tiles, 3);
 	InitScroll(pressstartWidth, pressstartHeight, pressstart, 0, 0, 3);
 	SHOW_BKG;

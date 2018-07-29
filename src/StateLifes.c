@@ -19,8 +19,14 @@ void PrintText() {
 	Printf("THAT WAS CLOSE");
 	PRINT_POS(7, 4);
 	Printf("BUDDY");
-	PRINT_POS(4, 14);
-	Printf("%d LIFES LEFT",lifes);
+	if (lifes > 1) {
+		PRINT_POS(4, 14);
+		Printf("%d LIFES LEFT", lifes);
+	}
+	if (lifes == 1) {
+		PRINT_POS(4, 14);
+		Printf("%d LIFE LEFT!", lifes);
+	}
 }
 
 void Start_STATE_LIFES() {
