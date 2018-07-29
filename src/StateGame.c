@@ -25,6 +25,10 @@ void Start_STATE_GAME() {
 	UINT8 i;
 	UINT16 startX, startY;
 
+	NR52_REG = 0x80; //Enables sound, you should always setup this first
+	NR51_REG = 0xFF; //Enables all channels (left and right)
+	NR50_REG = 0x77; //Max volume
+
 	SPRITES_8x16;
 	for(i = 0; i != n_sprite_types; ++ i) {
 		SpriteManagerLoad(i);

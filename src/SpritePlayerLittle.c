@@ -6,6 +6,7 @@
 #include "Keys.h"
 #include "Math.h"
 #include "Scroll.h"
+#include "Sound.h"
 
 #define YVELMAX 2
 #define GRAVITY 14
@@ -117,6 +118,7 @@ void Update_SPRITE_PLAYERLITTLE() {
 		} else {
 			data->ygrav = -VERTICALBOUNCE;
 		}
+		PlayFx(CHANNEL_1, 10, 0x23, 0x07, 0x7b, 0xab, 0x84);
 	}
 	// Horizontal
 	tile_collision = TranslateSprite(THIS, incx, 0);
@@ -132,6 +134,7 @@ void Update_SPRITE_PLAYERLITTLE() {
 			SpriteManagerRemoveSprite(THIS);
 		}
 		data->xvel = -data->xvel;
+		PlayFx(CHANNEL_1, 10, 0x23, 0x07, 0x7b, 0xab, 0x84);
 	}
 
 	/* backgroundTile = GetScrollTile(THIS->x + 4, THIS->y + 12);

@@ -2,6 +2,7 @@
 #include "SpriteExplosion.h"
 #include "SpriteManager.h"
 #include "ZGBMain.h"
+#include "Sound.h"
 
 UINT8 bank_SPRITE_EXPLOSION = 2;
 
@@ -11,6 +12,7 @@ void Start_SPRITE_EXPLOSION() {
 	THIS->anim_speed = 33u;
 }
 void Update_SPRITE_EXPLOSION() {
+	PlayFx(CHANNEL_4, 4, 0x0c, 0x41, 0x30, 0xc0);
 	if (THIS->current_frame == 3) {
 		SpriteManagerRemoveSprite(THIS);
 	}
