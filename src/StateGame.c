@@ -31,12 +31,43 @@ void Start_STATE_GAME() {
 	}
 	SHOW_SPRITES;
 
-	ScrollFindTile(mapWidth, map4, 3, 18, 0, 0, mapWidth, mapHeight, &startX, &startY);
-	scroll_target = SpriteManagerAdd(SPRITE_PLAYERLITTLE, startX<<3, startY<<3);
+	if(level ==1) {
+		ScrollFindTile(mapWidth, map, 3, 18, 0, 0, mapWidth, mapHeight, &startX, &startY);
+		scroll_target = SpriteManagerAdd(SPRITE_PLAYERLITTLE, startX << 3, startY << 3);
 
-	InitScrollTiles(0, 104, tiles, 3);
-	InitScroll(mapWidth, mapHeight, map4, collision_tiles, 0, 3);
-	SHOW_BKG;
+		InitScrollTiles(0, 104, tiles, 3);
+		InitScroll(mapWidth, mapHeight, map, collision_tiles, 0, 3);
+		SHOW_BKG;
+	}
+	if (level == 2) {
+		ScrollFindTile(map2Width, map2, 3, 18, 0, 0, map2Width, map2Height, &startX, &startY);
+		scroll_target = SpriteManagerAdd(SPRITE_PLAYERLITTLE, startX << 3, startY << 3);
+
+		InitScrollTiles(0, 104, tiles, 3);
+		InitScroll(map2Width, map2Height, map2, collision_tiles, 0, 3);
+		SHOW_BKG;
+	}
+	if (level == 3) {
+		ScrollFindTile(map3Width, map3, 3, 18, 0, 0, map3Width, map3Height, &startX, &startY);
+		scroll_target = SpriteManagerAdd(SPRITE_PLAYERLITTLE, startX << 3, startY << 3);
+
+		InitScrollTiles(0, 104, tiles, 3);
+		InitScroll(mapWidth, mapHeight, map3, collision_tiles, 0, 3);
+		SHOW_BKG;
+	}
+	if (level == 4) {
+		ScrollFindTile(map4Width, map4, 3, 18, 0, 0, map4Width, map4Height, &startX, &startY);
+		scroll_target = SpriteManagerAdd(SPRITE_PLAYERLITTLE, startX << 3, startY << 3);
+
+		InitScrollTiles(0, 104, tiles, 3);
+		InitScroll(map4Width, map4Height, map4, collision_tiles, 0, 3);
+		SHOW_BKG;
+	}
+	if (level > 4) {
+		SetState(STATE_WIN);
+	}
+
+
 }
 
 void Update_STATE_GAME() {

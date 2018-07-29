@@ -27,7 +27,9 @@ void Start_STATE_LIFES() {
 	InitScrollTiles(0, 104, tiles, 3);
 	InitScroll(lifesleftWidth, lifesleftHeight, lifesleft, 0, 0, 3);
 	SHOW_BKG;
-	lifes = lifes - 1;
+	if (lifes > 0) {
+		lifes = lifes - 1;
+	}
 	INIT_FONT(font, 3, PRINT_BKG);
 	PrintText();
 
