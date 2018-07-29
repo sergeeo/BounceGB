@@ -4,6 +4,9 @@ UINT8 bank_STATE_GAME = 2;
 
 #include "..\res\src\tiles.h"
 #include "..\res\src\map.h"
+#include "..\res\src\map2.h"
+#include "..\res\src\map3.h"
+#include "..\res\src\map4.h"
 
 #include "ZGBMain.h"
 #include "Scroll.h"
@@ -25,11 +28,11 @@ void Start_STATE_GAME() {
 	}
 	SHOW_SPRITES;
 
-	ScrollFindTile(mapWidth, map, 3, 18, 0, 0, mapWidth, mapHeight, &startX, &startY);
+	ScrollFindTile(mapWidth, map4, 3, 18, 0, 0, mapWidth, mapHeight, &startX, &startY);
 	scroll_target = SpriteManagerAdd(SPRITE_PLAYERLITTLE, startX<<3, startY<<3);
 
 	InitScrollTiles(0, 23, tiles, 3);
-	InitScroll(mapWidth, mapHeight, map, collision_tiles, 0, 3);
+	InitScroll(mapWidth, mapHeight, map4, collision_tiles, 0, 3);
 	SHOW_BKG;
 }
 

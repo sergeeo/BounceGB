@@ -8,13 +8,13 @@
 #include "Scroll.h"
 
 #define YVELMAX 2
-#define LATERALIMPULSE (3 << 8)
+#define GRAVITY 14
 #define MINXVELOCITY 32
-#define HORIZONTALRESISTANCE 14
 #define VERTICALBOUNCE 600
+#define LATERALIMPULSE (3 << 8)
+#define HORIZONTALRESISTANCE 14
 
 UINT8 bank_SPRITE_PLAYERLITTLE = 2;
-
 const UINT8 anim_walk[] = { 4, 0, 1, 2, 3};
 
 struct PlayerCustomData {
@@ -72,7 +72,7 @@ void Update_SPRITE_PLAYERLITTLE() {
 		incy = data->yaccum.b.h;
 		data->yaccum.b.h = 0;
 	}
-	data->ygrav += 14;
+	data->ygrav += GRAVITY;
 
 	// Horizontal Force
 	data->xaccum.w += data->xvel;
