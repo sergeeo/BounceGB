@@ -4,6 +4,10 @@ UINT8 init_bank = 1;
 
 
 #include "StateGame.h"
+#include "StateStart.h"
+#include "StateLifes.h"
+#include "StateGameOver.h"
+#include "StateWin.h"
 
 #include "SpritePlayerLittle.h"
 #include "SpriteExplosion.h"
@@ -18,6 +22,10 @@ SET_N_SPRITE_TYPES(N_SPRITE_TYPES);
 
 void InitStates() {
 	INIT_STATE(STATE_GAME);
+	INIT_STATE(STATE_START);
+	INIT_STATE(STATE_LIFES);
+	INIT_STATE(STATE_GAMEOVER);
+	INIT_STATE(STATE_WIN);
 }
 
 void InitSprites() {
