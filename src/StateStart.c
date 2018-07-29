@@ -1,4 +1,4 @@
-#pragma bank=2
+#pragma bank 2
 #include "StateStart.h"
 UINT8 bank_STATE_START = 2;
 
@@ -13,12 +13,14 @@ UINT8 bank_STATE_START = 2;
 extern UINT8 n_sprite_types;
 
 void PrintText() {
-	PRINT_POS(3, 16);
-	Printf("THIS IS A TEST");
+	PRINT_POS(4, 13);
+	Printf("PRESS START!");
+	PRINT_POS(2, 15);
+	Printf("SERGEEO ZGBJAM18");
 }
 
 void Start_STATE_START() {
-	InitScrollTiles(0, 103, tiles, 3);
+	InitScrollTiles(0, 104, tiles, 3);
 	InitScroll(pressstartWidth, pressstartHeight, pressstart, 0, 0, 3);
 	SHOW_BKG;
 

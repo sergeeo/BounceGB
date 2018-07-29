@@ -15,7 +15,7 @@ UINT8 init_bank = 1;
 #include "../res/src/playerlittle.h"
 #include "../res/src/explosion.h"
 
-UINT8 next_state = STATE_START;
+UINT8 next_state = STATE_WIN;
 
 SET_N_STATES(N_STATES);
 SET_N_SPRITE_TYPES(N_SPRITE_TYPES);

@@ -1,4 +1,4 @@
-#pragma bank=2
+#pragma bank 2
 #include "StateLifes.h"
 UINT8 bank_STATE_LIFES = 2;
 
@@ -13,12 +13,16 @@ UINT8 bank_STATE_LIFES = 2;
 extern UINT8 n_sprite_types;
 
 void PrintText() {
-	PRINT_POS(3, 16);
-	Printf("THIS IS A TEST");
+	PRINT_POS(3, 3);
+	Printf("THAT WAS CLOSE");
+	PRINT_POS(7, 4);
+	Printf("BUDDY");
+	PRINT_POS(4, 14);
+	Printf("%d LIFES LEFT",5);
 }
 
 void Start_STATE_LIFES() {
-	InitScrollTiles(0, 103, tiles, 3);
+	InitScrollTiles(0, 104, tiles, 3);
 	InitScroll(lifesleftWidth, lifesleftHeight, lifesleft, 0, 0, 3);
 	SHOW_BKG;
 

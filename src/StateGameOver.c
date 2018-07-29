@@ -1,4 +1,4 @@
-#pragma bank=2
+#pragma bank 2
 #include "StateGameOver.h"
 UINT8 bank_STATE_GAMEOVER = 2;
 
@@ -13,12 +13,12 @@ UINT8 bank_STATE_GAMEOVER = 2;
 extern UINT8 n_sprite_types;
 
 void PrintText() {
-	PRINT_POS(3, 16);
-	Printf("THIS IS A TEST");
+	PRINT_POS(5, 14);
+	Printf("TRY AGAIN!!");
 }
 
 void Start_STATE_GAMEOVER() {
-	InitScrollTiles(0, 103, tiles, 3);
+	InitScrollTiles(0, 104, tiles, 3);
 	InitScroll(gameoverWidth, gameoverHeight, gameover, 0, 0, 3);
 	SHOW_BKG;
 
