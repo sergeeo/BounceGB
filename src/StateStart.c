@@ -14,6 +14,7 @@ UINT8 bank_STATE_START = 2;
 extern UINT8 n_sprite_types;
 UINT8 lifes;
 UINT8 level;
+extern UINT8* startmusic_mod_Data[];
 
 void PrintText() {
 	PRINT_POS(4, 13);
@@ -23,6 +24,7 @@ void PrintText() {
 }
 
 void Start_STATE_START() {
+	PlayMusic(startmusic_mod_Data, 3, 1);
 	lifes = 5;
 	level = 1;
 

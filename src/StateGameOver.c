@@ -12,6 +12,7 @@ UINT8 bank_STATE_GAMEOVER = 2;
 #include "Keys.h"
 
 extern UINT8 n_sprite_types;
+extern UINT8* gameovermusic_mod_Data[];
 
 void PrintText() {
 	PRINT_POS(5, 14);
@@ -19,6 +20,7 @@ void PrintText() {
 }
 
 void Start_STATE_GAMEOVER() {
+	PlayMusic(gameovermusic_mod_Data, 3, 1);
 	InitScrollTiles(0, 104, tiles, 3);
 	InitScroll(gameoverWidth, gameoverHeight, gameover, 0, 0, 3);
 	SHOW_BKG;

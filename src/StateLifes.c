@@ -13,6 +13,7 @@ UINT8 bank_STATE_LIFES = 2;
 
 extern UINT8 n_sprite_types;
 extern UINT8 lifes;
+extern UINT8* gameovermusic_mod_Data[];
 
 void PrintText() {
 	PRINT_POS(3, 3);
@@ -30,6 +31,8 @@ void PrintText() {
 }
 
 void Start_STATE_LIFES() {
+	PlayMusic(gameovermusic_mod_Data, 3, 1);
+
 	InitScrollTiles(0, 104, tiles, 3);
 	InitScroll(lifesleftWidth, lifesleftHeight, lifesleft, 0, 0, 3);
 	SHOW_BKG;
