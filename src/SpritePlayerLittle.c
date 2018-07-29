@@ -16,6 +16,7 @@
 
 UINT8 bank_SPRITE_PLAYERLITTLE = 2;
 const UINT8 anim_walk[] = { 4, 0, 1, 2, 3};
+extern UINT8 level;
 
 struct PlayerCustomData {
 	INT16 ygrav;
@@ -122,6 +123,7 @@ void Update_SPRITE_PLAYERLITTLE() {
 	{
 		// Goal
 		if ((tile_collision >= 19) && (tile_collision <= 22)) {
+			level++;
 			SetState(STATE_GAME);
 		}
 		if ((tile_collision == 14) || (tile_collision == 15)) {

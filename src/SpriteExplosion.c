@@ -16,5 +16,5 @@ void Update_SPRITE_EXPLOSION() {
 	}
 }
 void Destroy_SPRITE_EXPLOSION() {
-	SetState(STATE_GAME);
+	SetState(STATE_LIFES);
 }

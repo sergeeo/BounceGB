@@ -9,6 +9,7 @@ UINT8 bank_STATE_GAMEOVER = 2;
 #include "ZGBMain.h"
 #include "Scroll.h"
 #include "Print.h"
+#include "Keys.h"
 
 extern UINT8 n_sprite_types;
 
@@ -27,4 +28,7 @@ void Start_STATE_GAMEOVER() {
 }
 
 void Update_STATE_GAMEOVER() {
+	if (keys) {
+		SetState(STATE_START);
+	}
 }

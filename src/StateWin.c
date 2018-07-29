@@ -9,6 +9,7 @@ UINT8 bank_STATE_WIN = 2;
 #include "ZGBMain.h"
 #include "Scroll.h"
 #include "Print.h"
+#include "Keys.h"
 
 extern UINT8 n_sprite_types;
 
@@ -30,4 +31,7 @@ void Start_STATE_WIN() {
 }
 
 void Update_STATE_WIN() {
+	if (KEY_TICKED(J_START)) {
+		SetState(STATE_START);
+	}
 }

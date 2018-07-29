@@ -14,6 +14,9 @@ UINT8 bank_STATE_GAME = 2;
 
 extern UINT8 n_sprite_types;
 
+UINT8 lifes = 5;
+UINT8 level = 1;
+
 // 2 is floor, 3 left wall, 4 right wall, 5 ceiling
 // 6 7 8 and 9 are corners
 UINT8 collision_tiles[] = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 19, 20, 21, 22, 0 };

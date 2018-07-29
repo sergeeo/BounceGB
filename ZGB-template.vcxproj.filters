@@ -17,7 +17,10 @@
     <ClInclude Include="include\StateGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\SpritePlayer.h">
+    <ClInclude Include="include\SpritePlayerLittle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SpriteExplosion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -28,10 +31,25 @@
     <ClCompile Include="src\StateGame.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\SpritePlayer.c">
+    <ClCompile Include="src\ZGBMain_Init.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ZGBMain_Init.c">
+    <ClCompile Include="src\SpritePlayerLittle.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SpriteExplosion.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StateGameOver.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StateLifes.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StateStart.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StateWin.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

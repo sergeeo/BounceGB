@@ -19,13 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\SpritePlayer.c" />
+    <ClCompile Include="src\SpriteExplosion.c" />
+    <ClCompile Include="src\SpritePlayerLittle.c" />
     <ClCompile Include="src\StateGame.c" />
+    <ClCompile Include="src\StateGameOver.c" />
+    <ClCompile Include="src\StateLifes.c" />
+    <ClCompile Include="src\StateStart.c" />
+    <ClCompile Include="src\StateWin.c" />
     <ClCompile Include="src\ZGBMain.c" />
     <ClCompile Include="src\ZGBMain_Init.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\SpritePlayer.h" />
+    <ClInclude Include="include\SpriteExplosion.h" />
+    <ClInclude Include="include\SpritePlayerLittle.h" />
     <ClInclude Include="include\StateGame.h" />
     <ClInclude Include="include\ZGBMain.h" />
   </ItemGroup>
