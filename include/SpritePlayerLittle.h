@@ -1,0 +1,8 @@
+#ifndef SPRITE_PLAYERLITTLE_H
+#define SPRITE_PLAYERLITTLE_H
+
+#include "main.h"
+
+DECLARE_SPRITE(SPRITE_PLAYERLITTLE);
+
+#endif
