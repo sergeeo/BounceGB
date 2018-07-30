@@ -1,0 +1,157 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.6.0 #9615 (MINGW64)
+                              4 ;--------------------------------------------------------
+                              5 	.module StateGameOver
+                              6 	.optsdcc -mgbz80
+                              7 	
+                              8 ;--------------------------------------------------------
+                              9 ; Public variables in this module
+                             10 ;--------------------------------------------------------
+                             11 	.globl _PrintText
+                             12 	.globl _Printf
+                             13 	.globl _InitScrollColor
+                             14 	.globl _ZInitScrollTilesColor
+                             15 	.globl _PlayMusic
+                             16 	.globl _SetState
+                             17 	.globl _bank_STATE_GAMEOVER
+                             18 	.globl _Start_STATE_GAMEOVER
+                             19 	.globl _Update_STATE_GAMEOVER
+                             20 ;--------------------------------------------------------
+                             21 ; ram data
+                             22 ;--------------------------------------------------------
+                             23 	.area _DATA
+   0000                      24 _bank_STATE_GAMEOVER::
+   0000                      25 	.ds 1
+                             26 ;--------------------------------------------------------
+                             27 ; absolute external ram data
+                             28 ;--------------------------------------------------------
+                             29 	.area _DABS (ABS)
+                             30 ;--------------------------------------------------------
+                             31 ; global & static initialisations
+                             32 ;--------------------------------------------------------
+                             33 	.area _HOME
+                             34 	.area _GSINIT
+                             35 	.area _GSFINAL
+                             36 	.area _GSINIT
+                             37 ;StateGameOver.c:3: UINT8 bank_STATE_GAMEOVER = 2;
+   0000 21r00r00             38 	ld	hl,#_bank_STATE_GAMEOVER
+   0003 36 02                39 	ld	(hl),#0x02
+                             40 ;--------------------------------------------------------
+                             41 ; Home
+                             42 ;--------------------------------------------------------
+                             43 	.area _HOME
+                             44 	.area _HOME
+                             45 ;--------------------------------------------------------
+                             46 ; code
+                             47 ;--------------------------------------------------------
+                             48 	.area _CODE_2
+                             49 ;StateGameOver.c:17: void PrintText() {
+                             50 ;	---------------------------------
+                             51 ; Function PrintText
+                             52 ; ---------------------------------
+   0000                      53 _PrintText::
+                             54 ;StateGameOver.c:18: PRINT_POS(5, 14);
+   0000 21r00r00             55 	ld	hl,#_print_x
+   0003 36 05                56 	ld	(hl),#0x05
+   0005 21r00r00             57 	ld	hl,#_print_y
+   0008 36 0E                58 	ld	(hl),#0x0e
+                             59 ;StateGameOver.c:19: Printf("TRY AGAIN!!");
+   000A 21r14r00             60 	ld	hl,#___str_0
+   000D E5                   61 	push	hl
+   000E CDr00r00             62 	call	_Printf
+   0011 E8 02                63 	add	sp, #2
+   0013 C9                   64 	ret
+   0014                      65 ___str_0:
+   0014 54 52 59 20 41 47    66 	.ascii "TRY AGAIN!!"
+        41 49 4E 21 21
+   001F 00                   67 	.db 0x00
+                             68 ;StateGameOver.c:22: void Start_STATE_GAMEOVER() {
+                             69 ;	---------------------------------
+                             70 ; Function Start_STATE_GAMEOVER
+                             71 ; ---------------------------------
+   0020                      72 _Start_STATE_GAMEOVER::
+                             73 ;StateGameOver.c:23: PlayMusic(gameovermusic_mod_Data, 3, 1);
+   0020 21 03 01             74 	ld	hl,#0x0103
+   0023 E5                   75 	push	hl
+   0024 21r00r00             76 	ld	hl,#_gameovermusic_mod_Data
+   0027 E5                   77 	push	hl
+   0028 CDr00r00             78 	call	_PlayMusic
+   002B E8 04                79 	add	sp, #4
+                             80 ;StateGameOver.c:24: InitScrollTiles(0, 104, tiles, 3);
+   002D 21 00 00             81 	ld	hl,#0x0000
+   0030 E5                   82 	push	hl
+   0031 3E 03                83 	ld	a,#0x03
+   0033 F5                   84 	push	af
+   0034 33                   85 	inc	sp
+   0035 21r00r00             86 	ld	hl,#_tiles
+   0038 E5                   87 	push	hl
+   0039 21 00 68             88 	ld	hl,#0x6800
+   003C E5                   89 	push	hl
+   003D CDr00r00             90 	call	_ZInitScrollTilesColor
+   0040 E8 07                91 	add	sp, #7
+                             92 ;StateGameOver.c:25: InitScroll(gameoverWidth, gameoverHeight, gameover, 0, 0, 3);
+   0042 21 00 00             93 	ld	hl,#0x0000
+   0045 E5                   94 	push	hl
+   0046 3E 03                95 	ld	a,#0x03
+   0048 F5                   96 	push	af
+   0049 33                   97 	inc	sp
+   004A 2E 00                98 	ld	l, #0x00
+   004C E5                   99 	push	hl
+   004D 2E 00               100 	ld	l, #0x00
+   004F E5                  101 	push	hl
+   0050 21r00r00            102 	ld	hl,#_gameover
+   0053 E5                  103 	push	hl
+   0054 21 12 00            104 	ld	hl,#0x0012
+   0057 E5                  105 	push	hl
+   0058 2E 14               106 	ld	l, #0x14
+   005A E5                  107 	push	hl
+   005B CDr00r00            108 	call	_InitScrollColor
+   005E E8 0D               109 	add	sp, #13
+                            110 ;StateGameOver.c:26: SHOW_BKG;
+   0060 11 40 FF            111 	ld	de,#0xff40
+   0063 1A                  112 	ld	a,(de)
+   0064 4F                  113 	ld	c,a
+   0065 06 00               114 	ld	b,#0x00
+   0067 79                  115 	ld	a,c
+   0068 CB C7               116 	set	0, a
+   006A 4F                  117 	ld	c,a
+   006B 21 40 FF            118 	ld	hl,#0xff40
+   006E 71                  119 	ld	(hl),c
+                            120 ;StateGameOver.c:28: INIT_FONT(font, 3, PRINT_BKG);
+   006F 21 00 00            121 	ld	hl,#0x0000
+   0072 E5                  122 	push	hl
+   0073 3E 03               123 	ld	a,#0x03
+   0075 F5                  124 	push	af
+   0076 33                  125 	inc	sp
+   0077 21r00r00            126 	ld	hl,#_font
+   007A E5                  127 	push	hl
+   007B 21 D2 2D            128 	ld	hl,#0x2dd2
+   007E E5                  129 	push	hl
+   007F CDr00r00            130 	call	_ZInitScrollTilesColor
+   0082 E8 07               131 	add	sp, #7
+   0084 21r00r00            132 	ld	hl,#_font_idx
+   0087 36 D2               133 	ld	(hl),#0xd2
+   0089 21r00r00            134 	ld	hl,#_print_target
+   008C 36 00               135 	ld	(hl),#0x00
+                            136 ;StateGameOver.c:29: PrintText();
+   008E C3r00r00            137 	jp	_PrintText
+                            138 ;StateGameOver.c:32: void Update_STATE_GAMEOVER() {
+                            139 ;	---------------------------------
+                            140 ; Function Update_STATE_GAMEOVER
+                            141 ; ---------------------------------
+   0091                     142 _Update_STATE_GAMEOVER::
+                            143 ;StateGameOver.c:33: if (keys) {
+   0091 21r00r00            144 	ld	hl,#_keys
+   0094 7E                  145 	ld	a,(hl)
+   0095 B7                  146 	or	a, a
+   0096 C8                  147 	ret	Z
+                            148 ;StateGameOver.c:34: SetState(STATE_START);
+   0097 3E 01               149 	ld	a,#0x01
+   0099 F5                  150 	push	af
+   009A 33                  151 	inc	sp
+   009B CDr00r00            152 	call	_SetState
+   009E 33                  153 	inc	sp
+   009F C9                  154 	ret
+                            155 	.area _CODE_2
+                            156 	.area _CABS (ABS)

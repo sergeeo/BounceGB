@@ -1,0 +1,851 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.6.0 #9615 (MINGW64)
+                              4 ;--------------------------------------------------------
+                              5 	.module SpritePlayerLittle
+                              6 	.optsdcc -mgbz80
+                              7 	
+                              8 ;--------------------------------------------------------
+                              9 ; Public variables in this module
+                             10 ;--------------------------------------------------------
+                             11 	.globl _PlayFx
+                             12 	.globl _SpriteManagerRemoveSprite
+                             13 	.globl _SpriteManagerAdd
+                             14 	.globl _SetState
+                             15 	.globl _TranslateSprite
+                             16 	.globl _SetSpriteAnim
+                             17 	.globl _bank_SPRITE_PLAYERLITTLE
+                             18 	.globl _anim_walk
+                             19 	.globl _Start_SPRITE_PLAYERLITTLE
+                             20 	.globl _Update_SPRITE_PLAYERLITTLE
+                             21 	.globl _Destroy_SPRITE_PLAYERLITTLE
+                             22 ;--------------------------------------------------------
+                             23 ; ram data
+                             24 ;--------------------------------------------------------
+                             25 	.area _DATA
+   0000                      26 _bank_SPRITE_PLAYERLITTLE::
+   0000                      27 	.ds 1
+                             28 ;--------------------------------------------------------
+                             29 ; absolute external ram data
+                             30 ;--------------------------------------------------------
+                             31 	.area _DABS (ABS)
+                             32 ;--------------------------------------------------------
+                             33 ; global & static initialisations
+                             34 ;--------------------------------------------------------
+                             35 	.area _HOME
+                             36 	.area _GSINIT
+                             37 	.area _GSFINAL
+                             38 	.area _GSINIT
+                             39 ;SpritePlayerLittle.c:18: UINT8 bank_SPRITE_PLAYERLITTLE = 2;
+   0000 21r00r00             40 	ld	hl,#_bank_SPRITE_PLAYERLITTLE
+   0003 36 02                41 	ld	(hl),#0x02
+                             42 ;--------------------------------------------------------
+                             43 ; Home
+                             44 ;--------------------------------------------------------
+                             45 	.area _HOME
+                             46 	.area _HOME
+                             47 ;--------------------------------------------------------
+                             48 ; code
+                             49 ;--------------------------------------------------------
+                             50 	.area _CODE_2
+                             51 ;SpritePlayerLittle.c:29: void Start_SPRITE_PLAYERLITTLE() {
+                             52 ;	---------------------------------
+                             53 ; Function Start_SPRITE_PLAYERLITTLE
+                             54 ; ---------------------------------
+   0000                      55 _Start_SPRITE_PLAYERLITTLE::
+   0000 E8 FE                56 	add	sp, #-2
+                             57 ;SpritePlayerLittle.c:31: struct PlayerCustomData* data = (struct PlayerCustomData*)THIS->custom_data;
+   0002 21r01r00             58 	ld	hl,#_THIS + 1
+   0005 2B                   59 	dec	hl
+   0006 4E                   60 	ld	c,(hl)
+   0007 23                   61 	inc	hl
+   0008 46                   62 	ld	b,(hl)
+   0009 21 18 00             63 	ld	hl,#0x0018
+   000C 09                   64 	add	hl,bc
+   000D 4D                   65 	ld	c,l
+   000E 44                   66 	ld	b,h
+                             67 ;SpritePlayerLittle.c:32: data->xvel = 0;
+   000F 21 06 00             68 	ld	hl,#0x0006
+   0012 09                   69 	add	hl,bc
+   0013 33                   70 	inc	sp
+   0014 33                   71 	inc	sp
+   0015 E5                   72 	push	hl
+   0016 E1                   73 	pop	hl
+   0017 E5                   74 	push	hl
+   0018 36 00                75 	ld	(hl),#0x00
+   001A 23                   76 	inc	hl
+   001B 36 00                77 	ld	(hl),#0x00
+                             78 ;SpritePlayerLittle.c:33: data->ygrav = 0;
+   001D 3E 00                79 	ld	a,#0x00
+   001F 02                   80 	ld	(bc),a
+   0020 03                   81 	inc	bc
+   0021 3E 00                82 	ld	a,#0x00
+   0023 02                   83 	ld	(bc),a
+                             84 ;SpritePlayerLittle.c:35: THIS->coll_x = 0u;
+   0024 21r01r00             85 	ld	hl,#_THIS + 1
+   0027 2B                   86 	dec	hl
+   0028 4E                   87 	ld	c,(hl)
+   0029 23                   88 	inc	hl
+   002A 46                   89 	ld	b,(hl)
+   002B 21 0C 00             90 	ld	hl,#0x000c
+   002E 09                   91 	add	hl,bc
+   002F 4D                   92 	ld	c,l
+   0030 44                   93 	ld	b,h
+   0031 AF                   94 	xor	a, a
+   0032 02                   95 	ld	(bc),a
+                             96 ;SpritePlayerLittle.c:36: THIS->coll_y = 0u;
+   0033 21r01r00             97 	ld	hl,#_THIS + 1
+   0036 2B                   98 	dec	hl
+   0037 4E                   99 	ld	c,(hl)
+   0038 23                  100 	inc	hl
+   0039 46                  101 	ld	b,(hl)
+   003A 21 0D 00            102 	ld	hl,#0x000d
+   003D 09                  103 	add	hl,bc
+   003E 4D                  104 	ld	c,l
+   003F 44                  105 	ld	b,h
+   0040 AF                  106 	xor	a, a
+   0041 02                  107 	ld	(bc),a
+                            108 ;SpritePlayerLittle.c:37: THIS->coll_w = 8u;
+   0042 21r01r00            109 	ld	hl,#_THIS + 1
+   0045 2B                  110 	dec	hl
+   0046 4E                  111 	ld	c,(hl)
+   0047 23                  112 	inc	hl
+   0048 46                  113 	ld	b,(hl)
+   0049 21 0E 00            114 	ld	hl,#0x000e
+   004C 09                  115 	add	hl,bc
+   004D 4D                  116 	ld	c,l
+   004E 44                  117 	ld	b,h
+   004F 3E 08               118 	ld	a,#0x08
+   0051 02                  119 	ld	(bc),a
+                            120 ;SpritePlayerLittle.c:38: THIS->coll_h = 8u;
+   0052 21r01r00            121 	ld	hl,#_THIS + 1
+   0055 2B                  122 	dec	hl
+   0056 4E                  123 	ld	c,(hl)
+   0057 23                  124 	inc	hl
+   0058 46                  125 	ld	b,(hl)
+   0059 21 0F 00            126 	ld	hl,#0x000f
+   005C 09                  127 	add	hl,bc
+   005D 4D                  128 	ld	c,l
+   005E 44                  129 	ld	b,h
+   005F 3E 08               130 	ld	a,#0x08
+   0061 02                  131 	ld	(bc),a
+   0062 E8 02               132 	add	sp, #2
+   0064 C9                  133 	ret
+   0065                     134 _anim_walk:
+   0065 04                  135 	.db #0x04	; 4
+   0066 00                  136 	.db #0x00	; 0
+   0067 01                  137 	.db #0x01	; 1
+   0068 02                  138 	.db #0x02	; 2
+   0069 03                  139 	.db #0x03	; 3
+                            140 ;SpritePlayerLittle.c:41: void Update_SPRITE_PLAYERLITTLE() {
+                            141 ;	---------------------------------
+                            142 ; Function Update_SPRITE_PLAYERLITTLE
+                            143 ; ---------------------------------
+   006A                     144 _Update_SPRITE_PLAYERLITTLE::
+   006A E8 F6               145 	add	sp, #-10
+                            146 ;SpritePlayerLittle.c:43: struct PlayerCustomData* data = (struct PlayerCustomData*)THIS->custom_data;
+   006C 21r00r00            147 	ld	hl,#_THIS
+   006F 2A                  148 	ld	a,(hl+)
+   0070 5E                  149 	ld	e, (hl)
+   0071 F8 08               150 	ldhl	sp,#8
+   0073 22                  151 	ld	(hl+),a
+   0074 73                  152 	ld	(hl),e
+   0075 2B                  153 	dec	hl
+   0076 5E                  154 	ld	e,(hl)
+   0077 23                  155 	inc	hl
+   0078 56                  156 	ld	d,(hl)
+   0079 21 18 00            157 	ld	hl,#0x0018
+   007C 19                  158 	add	hl,de
+   007D 4D                  159 	ld	c,l
+   007E 44                  160 	ld	b,h
+   007F 33                  161 	inc	sp
+   0080 33                  162 	inc	sp
+   0081 C5                  163 	push	bc
+                            164 ;SpritePlayerLittle.c:46: INT8 incx = 0;
+   0082 F8 02               165 	ldhl	sp,#2
+   0084 36 00               166 	ld	(hl),#0x00
+                            167 ;SpritePlayerLittle.c:47: INT8 incy = 0;
+   0086 F8 05               168 	ldhl	sp,#5
+   0088 36 00               169 	ld	(hl),#0x00
+                            170 ;SpritePlayerLittle.c:51: if (KEY_TICKED(J_LEFT)) {
+   008A 21r00r00            171 	ld	hl,#_keys
+   008D 4E                  172 	ld	c,(hl)
+   008E 06 00               173 	ld	b,#0x00
+                            174 ;SpritePlayerLittle.c:55: if (data->xvel >= -MINXVELOCITY) {
+   0090 D1                  175 	pop	de
+   0091 D5                  176 	push	de
+   0092 21 06 00            177 	ld	hl,#0x0006
+   0095 19                  178 	add	hl,de
+   0096 7D                  179 	ld	a,l
+   0097 54                  180 	ld	d,h
+   0098 F8 06               181 	ldhl	sp,#6
+   009A 22                  182 	ld	(hl+),a
+   009B 72                  183 	ld	(hl),d
+                            184 ;SpritePlayerLittle.c:51: if (KEY_TICKED(J_LEFT)) {
+   009C CB 49               185 	bit	1, c
+   009E CArDEr00            186 	jp	Z,00104$
+   00A1 21r00r00            187 	ld	hl,#_previous_keys
+   00A4 4E                  188 	ld	c,(hl)
+   00A5 06 00               189 	ld	b,#0x00
+   00A7 CB 49               190 	bit	1, c
+   00A9 C2rDEr00            191 	jp	NZ,00104$
+                            192 ;SpritePlayerLittle.c:53: SPRITE_SET_VMIRROR(THIS);
+   00AC F8 08               193 	ldhl	sp,#(9 - 1)
+   00AE 5E                  194 	ld	e,(hl)
+   00AF 23                  195 	inc	hl
+   00B0 56                  196 	ld	d,(hl)
+   00B1 21 0B 00            197 	ld	hl,#0x000b
+   00B4 19                  198 	add	hl,de
+   00B5 4D                  199 	ld	c,l
+   00B6 44                  200 	ld	b,h
+   00B7 0A                  201 	ld	a,(bc)
+   00B8 CB EF               202 	set	5, a
+   00BA 02                  203 	ld	(bc),a
+                            204 ;SpritePlayerLittle.c:55: if (data->xvel >= -MINXVELOCITY) {
+   00BB F8 06               205 	ldhl	sp,#(7 - 1)
+   00BD 5E                  206 	ld	e,(hl)
+   00BE 23                  207 	inc	hl
+   00BF 56                  208 	ld	d,(hl)
+   00C0 1A                  209 	ld	a,(de)
+   00C1 4F                  210 	ld	c,a
+   00C2 13                  211 	inc	de
+   00C3 1A                  212 	ld	a,(de)
+   00C4 47                  213 	ld	b,a
+   00C5 3E FF               214 	ld	a,#0xff
+   00C7 5F                  215 	ld	e,a
+   00C8 78                  216 	ld	a,b
+   00C9 57                  217 	ld	d,a
+   00CA 79                  218 	ld	a,c
+   00CB D6 E0               219 	sub	a, #0xe0
+   00CD 78                  220 	ld	a,b
+   00CE 17                  221 	rla
+   00CF 3F                  222 	ccf
+   00D0 1F                  223 	rra
+   00D1 DE 7F               224 	sbc	a, #0x7f
+   00D3 38 09               225 	jr	C,00104$
+                            226 ;SpritePlayerLittle.c:56: data->xvel = -LATERALIMPULSE;
+   00D5 2B                  227 	dec	hl
+   00D6 2A                  228 	ld	a,(hl+)
+   00D7 66                  229 	ld	h,(hl)
+   00D8 6F                  230 	ld	l,a
+   00D9 36 00               231 	ld	(hl),#0x00
+   00DB 23                  232 	inc	hl
+   00DC 36 FD               233 	ld	(hl),#0xfd
+   00DE                     234 00104$:
+                            235 ;SpritePlayerLittle.c:59: if (KEY_TICKED(J_RIGHT)) {
+   00DE 21r00r00            236 	ld	hl,#_keys
+   00E1 4E                  237 	ld	c,(hl)
+   00E2 06 00               238 	ld	b,#0x00
+   00E4 CB 41               239 	bit	0, c
+   00E6 CAr35r01            240 	jp	Z,00109$
+   00E9 21r00r00            241 	ld	hl,#_previous_keys
+   00EC 4E                  242 	ld	c,(hl)
+   00ED 06 00               243 	ld	b,#0x00
+   00EF CB 41               244 	bit	0, c
+   00F1 C2r35r01            245 	jp	NZ,00109$
+                            246 ;SpritePlayerLittle.c:43: struct PlayerCustomData* data = (struct PlayerCustomData*)THIS->custom_data;
+   00F4 21r01r00            247 	ld	hl,#_THIS + 1
+   00F7 2B                  248 	dec	hl
+   00F8 4E                  249 	ld	c,(hl)
+   00F9 23                  250 	inc	hl
+   00FA 46                  251 	ld	b,(hl)
+                            252 ;SpritePlayerLittle.c:53: SPRITE_SET_VMIRROR(THIS);
+   00FB 21 0B 00            253 	ld	hl,#0x000b
+   00FE 09                  254 	add	hl,bc
+   00FF 4D                  255 	ld	c,l
+   0100 44                  256 	ld	b,h
+                            257 ;SpritePlayerLittle.c:61: SPRITE_UNSET_VMIRROR(THIS);
+   0101 0A                  258 	ld	a,(bc)
+   0102 E6 DF               259 	and	a, #0xdf
+   0104 02                  260 	ld	(bc),a
+                            261 ;SpritePlayerLittle.c:63: if (data->xvel <= MINXVELOCITY) {
+   0105 F8 06               262 	ldhl	sp,#(7 - 1)
+   0107 5E                  263 	ld	e,(hl)
+   0108 23                  264 	inc	hl
+   0109 56                  265 	ld	d,(hl)
+   010A 1A                  266 	ld	a,(de)
+   010B 4F                  267 	ld	c,a
+   010C 13                  268 	inc	de
+   010D 1A                  269 	ld	a,(de)
+   010E 47                  270 	ld	b,a
+   010F 5F                  271 	ld	e,a
+   0110 3E 00               272 	ld	a,#0x00
+   0112 57                  273 	ld	d,a
+   0113 3E 20               274 	ld	a,#0x20
+   0115 B9                  275 	cp	a, c
+   0116 3E 00               276 	ld	a,#0x00
+   0118 98                  277 	sbc	a, b
+   0119 CB 7B               278 	bit	7, e
+   011B 28 07               279 	jr	Z,00229$
+   011D CB 7A               280 	bit	7, d
+   011F 20 08               281 	jr	NZ,00230$
+   0121 BF                  282 	cp	a, a
+   0122 18 05               283 	jr	00230$
+   0124                     284 00229$:
+   0124 CB 7A               285 	bit	7, d
+   0126 28 01               286 	jr	Z,00230$
+   0128 37                  287 	scf
+   0129                     288 00230$:
+   0129 38 0A               289 	jr	C,00109$
+                            290 ;SpritePlayerLittle.c:64: data->xvel = LATERALIMPULSE;
+   012B F8 06               291 	ldhl	sp,#6
+   012D 2A                  292 	ld	a,(hl+)
+   012E 66                  293 	ld	h,(hl)
+   012F 6F                  294 	ld	l,a
+   0130 36 00               295 	ld	(hl),#0x00
+   0132 23                  296 	inc	hl
+   0133 36 03               297 	ld	(hl),#0x03
+   0135                     298 00109$:
+                            299 ;SpritePlayerLittle.c:69: SetSpriteAnim(THIS, anim_walk, 15);
+   0135 3E 0F               300 	ld	a,#0x0f
+   0137 F5                  301 	push	af
+   0138 33                  302 	inc	sp
+   0139 21r65r00            303 	ld	hl,#_anim_walk
+   013C E5                  304 	push	hl
+   013D 21r00r00            305 	ld	hl,#_THIS
+   0140 2A                  306 	ld	a,(hl+)
+   0141 66                  307 	ld	h,(hl)
+   0142 6F                  308 	ld	l,a
+   0143 E5                  309 	push	hl
+   0144 CDr00r00            310 	call	_SetSpriteAnim
+   0147 E8 05               311 	add	sp, #5
+                            312 ;SpritePlayerLittle.c:72: data->yaccum.w += data->ygrav;
+   0149 D1                  313 	pop	de
+   014A D5                  314 	push	de
+   014B 21 02 00            315 	ld	hl,#0x0002
+   014E 19                  316 	add	hl,de
+   014F 7D                  317 	ld	a,l
+   0150 54                  318 	ld	d,h
+   0151 F8 08               319 	ldhl	sp,#8
+   0153 22                  320 	ld	(hl+),a
+   0154 72                  321 	ld	(hl),d
+   0155 2B                  322 	dec	hl
+   0156 5E                  323 	ld	e,(hl)
+   0157 23                  324 	inc	hl
+   0158 56                  325 	ld	d,(hl)
+   0159 1A                  326 	ld	a,(de)
+   015A F8 03               327 	ldhl	sp,#3
+   015C 22                  328 	ld	(hl+),a
+   015D 13                  329 	inc	de
+   015E 1A                  330 	ld	a,(de)
+   015F 77                  331 	ld	(hl),a
+   0160 D1                  332 	pop	de
+   0161 D5                  333 	push	de
+   0162 1A                  334 	ld	a,(de)
+   0163 4F                  335 	ld	c,a
+   0164 13                  336 	inc	de
+   0165 1A                  337 	ld	a,(de)
+   0166 47                  338 	ld	b,a
+   0167 2B                  339 	dec	hl
+   0168 2A                  340 	ld	a,(hl+)
+   0169 66                  341 	ld	h,(hl)
+   016A 6F                  342 	ld	l,a
+   016B 09                  343 	add	hl,bc
+   016C 4D                  344 	ld	c,l
+   016D 44                  345 	ld	b,h
+   016E F8 08               346 	ldhl	sp,#8
+   0170 2A                  347 	ld	a,(hl+)
+   0171 66                  348 	ld	h,(hl)
+   0172 6F                  349 	ld	l,a
+   0173 71                  350 	ld	(hl),c
+   0174 23                  351 	inc	hl
+   0175 70                  352 	ld	(hl),b
+                            353 ;SpritePlayerLittle.c:73: if (data->yaccum.b.h != 0) {
+   0176 F8 08               354 	ldhl	sp,#(9 - 1)
+   0178 4E                  355 	ld	c,(hl)
+   0179 23                  356 	inc	hl
+   017A 46                  357 	ld	b,(hl)
+   017B 03                  358 	inc	bc
+   017C 0A                  359 	ld	a,(bc)
+   017D B7                  360 	or	a, a
+   017E 28 06               361 	jr	Z,00112$
+                            362 ;SpritePlayerLittle.c:74: incy = data->yaccum.b.h;
+   0180 0A                  363 	ld	a,(bc)
+   0181 F8 05               364 	ldhl	sp,#5
+   0183 77                  365 	ld	(hl),a
+                            366 ;SpritePlayerLittle.c:75: data->yaccum.b.h = 0;
+   0184 AF                  367 	xor	a, a
+   0185 02                  368 	ld	(bc),a
+   0186                     369 00112$:
+                            370 ;SpritePlayerLittle.c:77: data->ygrav += GRAVITY;
+   0186 D1                  371 	pop	de
+   0187 D5                  372 	push	de
+   0188 1A                  373 	ld	a,(de)
+   0189 4F                  374 	ld	c,a
+   018A 13                  375 	inc	de
+   018B 1A                  376 	ld	a,(de)
+   018C 47                  377 	ld	b,a
+   018D 21 0E 00            378 	ld	hl,#0x000e
+   0190 09                  379 	add	hl,bc
+   0191 4D                  380 	ld	c,l
+   0192 44                  381 	ld	b,h
+   0193 E1                  382 	pop	hl
+   0194 E5                  383 	push	hl
+   0195 71                  384 	ld	(hl),c
+   0196 23                  385 	inc	hl
+   0197 70                  386 	ld	(hl),b
+                            387 ;SpritePlayerLittle.c:80: data->xaccum.w += data->xvel;
+   0198 D1                  388 	pop	de
+   0199 D5                  389 	push	de
+   019A 21 04 00            390 	ld	hl,#0x0004
+   019D 19                  391 	add	hl,de
+   019E 7D                  392 	ld	a,l
+   019F 54                  393 	ld	d,h
+   01A0 F8 03               394 	ldhl	sp,#3
+   01A2 22                  395 	ld	(hl+),a
+   01A3 72                  396 	ld	(hl),d
+   01A4 2B                  397 	dec	hl
+   01A5 5E                  398 	ld	e,(hl)
+   01A6 23                  399 	inc	hl
+   01A7 56                  400 	ld	d,(hl)
+   01A8 1A                  401 	ld	a,(de)
+   01A9 F8 08               402 	ldhl	sp,#8
+   01AB 22                  403 	ld	(hl+),a
+   01AC 13                  404 	inc	de
+   01AD 1A                  405 	ld	a,(de)
+   01AE 32                  406 	ld	(hl-),a
+   01AF 2B                  407 	dec	hl
+   01B0 2B                  408 	dec	hl
+   01B1 5E                  409 	ld	e,(hl)
+   01B2 23                  410 	inc	hl
+   01B3 56                  411 	ld	d,(hl)
+   01B4 1A                  412 	ld	a,(de)
+   01B5 4F                  413 	ld	c,a
+   01B6 13                  414 	inc	de
+   01B7 1A                  415 	ld	a,(de)
+   01B8 47                  416 	ld	b,a
+   01B9 23                  417 	inc	hl
+   01BA 2A                  418 	ld	a,(hl+)
+   01BB 66                  419 	ld	h,(hl)
+   01BC 6F                  420 	ld	l,a
+   01BD 09                  421 	add	hl,bc
+   01BE 4D                  422 	ld	c,l
+   01BF 44                  423 	ld	b,h
+   01C0 F8 03               424 	ldhl	sp,#3
+   01C2 2A                  425 	ld	a,(hl+)
+   01C3 66                  426 	ld	h,(hl)
+   01C4 6F                  427 	ld	l,a
+   01C5 71                  428 	ld	(hl),c
+   01C6 23                  429 	inc	hl
+   01C7 70                  430 	ld	(hl),b
+                            431 ;SpritePlayerLittle.c:81: if (data->xaccum.b.h != 0) {
+   01C8 F8 03               432 	ldhl	sp,#(4 - 1)
+   01CA 4E                  433 	ld	c,(hl)
+   01CB 23                  434 	inc	hl
+   01CC 46                  435 	ld	b,(hl)
+   01CD 03                  436 	inc	bc
+   01CE 0A                  437 	ld	a,(bc)
+   01CF B7                  438 	or	a, a
+   01D0 28 06               439 	jr	Z,00114$
+                            440 ;SpritePlayerLittle.c:82: incx = data->xaccum.b.h;
+   01D2 0A                  441 	ld	a,(bc)
+   01D3 2B                  442 	dec	hl
+   01D4 2B                  443 	dec	hl
+   01D5 77                  444 	ld	(hl),a
+                            445 ;SpritePlayerLittle.c:83: data->xaccum.b.h = 0;
+   01D6 AF                  446 	xor	a, a
+   01D7 02                  447 	ld	(bc),a
+   01D8                     448 00114$:
+                            449 ;SpritePlayerLittle.c:86: if (data->xvel > 0) {
+   01D8 F8 06               450 	ldhl	sp,#(7 - 1)
+   01DA 5E                  451 	ld	e,(hl)
+   01DB 23                  452 	inc	hl
+   01DC 56                  453 	ld	d,(hl)
+   01DD 1A                  454 	ld	a,(de)
+   01DE 4F                  455 	ld	c,a
+   01DF 13                  456 	inc	de
+   01E0 1A                  457 	ld	a,(de)
+   01E1 47                  458 	ld	b,a
+   01E2 5F                  459 	ld	e,a
+   01E3 3E 00               460 	ld	a,#0x00
+   01E5 57                  461 	ld	d,a
+   01E6 AF                  462 	xor	a, a
+   01E7 B9                  463 	cp	a, c
+   01E8 98                  464 	sbc	a, b
+   01E9 CB 7B               465 	bit	7, e
+   01EB 28 07               466 	jr	Z,00231$
+   01ED CB 7A               467 	bit	7, d
+   01EF 20 08               468 	jr	NZ,00232$
+   01F1 BF                  469 	cp	a, a
+   01F2 18 05               470 	jr	00232$
+   01F4                     471 00231$:
+   01F4 CB 7A               472 	bit	7, d
+   01F6 28 01               473 	jr	Z,00232$
+   01F8 37                  474 	scf
+   01F9                     475 00232$:
+   01F9 30 27               476 	jr	NC,00120$
+                            477 ;SpritePlayerLittle.c:87: data->xvel = data->xvel - HORIZONTALRESISTANCE;
+   01FB 79                  478 	ld	a,c
+   01FC C6 F2               479 	add	a,#0xf2
+   01FE 4F                  480 	ld	c,a
+   01FF 78                  481 	ld	a,b
+   0200 CE FF               482 	adc	a,#0xff
+   0202 47                  483 	ld	b,a
+   0203 F8 06               484 	ldhl	sp,#6
+   0205 2A                  485 	ld	a,(hl+)
+   0206 66                  486 	ld	h,(hl)
+   0207 6F                  487 	ld	l,a
+   0208 71                  488 	ld	(hl),c
+   0209 23                  489 	inc	hl
+   020A 70                  490 	ld	(hl),b
+                            491 ;SpritePlayerLittle.c:88: if (data->xvel < 0) {
+   020B 3E 00               492 	ld	a,#0x00
+   020D 5F                  493 	ld	e,a
+   020E 78                  494 	ld	a,b
+   020F 57                  495 	ld	d,a
+   0210 CB 78               496 	bit	7, b
+   0212 CAr54r02            497 	jp	Z,00121$
+                            498 ;SpritePlayerLittle.c:89: data->xvel = 0;
+   0215 F8 06               499 	ldhl	sp,#6
+   0217 2A                  500 	ld	a,(hl+)
+   0218 66                  501 	ld	h,(hl)
+   0219 6F                  502 	ld	l,a
+   021A 36 00               503 	ld	(hl),#0x00
+   021C 23                  504 	inc	hl
+   021D 36 00               505 	ld	(hl),#0x00
+   021F C3r54r02            506 	jp	00121$
+   0222                     507 00120$:
+                            508 ;SpritePlayerLittle.c:93: data->xvel = data->xvel + HORIZONTALRESISTANCE;
+   0222 21 0E 00            509 	ld	hl,#0x000e
+   0225 09                  510 	add	hl,bc
+   0226 4D                  511 	ld	c,l
+   0227 44                  512 	ld	b,h
+   0228 F8 06               513 	ldhl	sp,#6
+   022A 2A                  514 	ld	a,(hl+)
+   022B 66                  515 	ld	h,(hl)
+   022C 6F                  516 	ld	l,a
+   022D 71                  517 	ld	(hl),c
+   022E 23                  518 	inc	hl
+   022F 70                  519 	ld	(hl),b
+                            520 ;SpritePlayerLittle.c:94: if (data->xvel > 0) {
+   0230 78                  521 	ld	a,b
+   0231 5F                  522 	ld	e,a
+   0232 3E 00               523 	ld	a,#0x00
+   0234 57                  524 	ld	d,a
+   0235 AF                  525 	xor	a, a
+   0236 B9                  526 	cp	a, c
+   0237 98                  527 	sbc	a, b
+   0238 CB 7B               528 	bit	7, e
+   023A 28 07               529 	jr	Z,00233$
+   023C CB 7A               530 	bit	7, d
+   023E 20 08               531 	jr	NZ,00234$
+   0240 BF                  532 	cp	a, a
+   0241 18 05               533 	jr	00234$
+   0243                     534 00233$:
+   0243 CB 7A               535 	bit	7, d
+   0245 28 01               536 	jr	Z,00234$
+   0247 37                  537 	scf
+   0248                     538 00234$:
+   0248 30 0A               539 	jr	NC,00121$
+                            540 ;SpritePlayerLittle.c:95: data->xvel = 0;
+   024A F8 06               541 	ldhl	sp,#6
+   024C 2A                  542 	ld	a,(hl+)
+   024D 66                  543 	ld	h,(hl)
+   024E 6F                  544 	ld	l,a
+   024F 36 00               545 	ld	(hl),#0x00
+   0251 23                  546 	inc	hl
+   0252 36 00               547 	ld	(hl),#0x00
+   0254                     548 00121$:
+                            549 ;SpritePlayerLittle.c:102: tile_collision = TranslateSprite(THIS, 0, incy);
+   0254 F8 05               550 	ldhl	sp,#5
+   0256 7E                  551 	ld	a,(hl)
+   0257 F5                  552 	push	af
+   0258 33                  553 	inc	sp
+   0259 AF                  554 	xor	a, a
+   025A F5                  555 	push	af
+   025B 33                  556 	inc	sp
+   025C 21r00r00            557 	ld	hl,#_THIS
+   025F 2A                  558 	ld	a,(hl+)
+   0260 66                  559 	ld	h,(hl)
+   0261 6F                  560 	ld	l,a
+   0262 E5                  561 	push	hl
+   0263 CDr00r00            562 	call	_TranslateSprite
+   0266 E8 04               563 	add	sp, #4
+   0268 4B                  564 	ld	c,e
+                            565 ;SpritePlayerLittle.c:103: if (tile_collision != 0)
+   0269 79                  566 	ld	a,c
+   026A B7                  567 	or	a, a
+   026B CAr11r03            568 	jp	Z,00132$
+                            569 ;SpritePlayerLittle.c:106: if ((tile_collision >= 19) && (tile_collision <= 22)) {
+   026E 79                  570 	ld	a,c
+   026F D6 13               571 	sub	a, #0x13
+   0271 38 12               572 	jr	C,00123$
+   0273 3E 16               573 	ld	a,#0x16
+   0275 91                  574 	sub	a, c
+   0276 38 0D               575 	jr	C,00123$
+                            576 ;SpritePlayerLittle.c:107: level++;
+   0278 21r00r00            577 	ld	hl,#_level
+   027B 34                  578 	inc	(hl)
+                            579 ;SpritePlayerLittle.c:108: SetState(STATE_GAME);
+   027C C5                  580 	push	bc
+   027D AF                  581 	xor	a, a
+   027E F5                  582 	push	af
+   027F 33                  583 	inc	sp
+   0280 CDr00r00            584 	call	_SetState
+   0283 33                  585 	inc	sp
+   0284 C1                  586 	pop	bc
+   0285                     587 00123$:
+                            588 ;SpritePlayerLittle.c:111: if ((tile_collision == 14) || (tile_collision == 15)) {
+   0285 79                  589 	ld	a,c
+   0286 FE 0E               590 	cp	a,#0x0e
+   0288 28 05               591 	jr	Z,00125$
+   028A D6 0F               592 	sub	a, #0x0f
+   028C C2rD3r02            593 	jp	NZ,00126$
+   028F                     594 00125$:
+                            595 ;SpritePlayerLittle.c:43: struct PlayerCustomData* data = (struct PlayerCustomData*)THIS->custom_data;
+   028F 21r01r00            596 	ld	hl,#_THIS + 1
+   0292 2B                  597 	dec	hl
+   0293 4E                  598 	ld	c,(hl)
+   0294 23                  599 	inc	hl
+   0295 46                  600 	ld	b,(hl)
+                            601 ;SpritePlayerLittle.c:112: SpriteManagerAdd(SPRITE_EXPLOSION, THIS->x, THIS->y);
+   0296 21 09 00            602 	ld	hl,#0x0009
+   0299 09                  603 	add	hl,bc
+   029A 7D                  604 	ld	a,l
+   029B 54                  605 	ld	d,h
+   029C F8 03               606 	ldhl	sp,#3
+   029E 22                  607 	ld	(hl+),a
+   029F 72                  608 	ld	(hl),d
+   02A0 2B                  609 	dec	hl
+   02A1 5E                  610 	ld	e,(hl)
+   02A2 23                  611 	inc	hl
+   02A3 56                  612 	ld	d,(hl)
+   02A4 1A                  613 	ld	a,(de)
+   02A5 2B                  614 	dec	hl
+   02A6 22                  615 	ld	(hl+),a
+   02A7 13                  616 	inc	de
+   02A8 1A                  617 	ld	a,(de)
+   02A9 77                  618 	ld	(hl),a
+   02AA 21 07 00            619 	ld	hl,#0x0007
+   02AD 09                  620 	add	hl,bc
+   02AE 4D                  621 	ld	c,l
+   02AF 44                  622 	ld	b,h
+   02B0 59                  623 	ld	e, c
+   02B1 50                  624 	ld	d, b
+   02B2 1A                  625 	ld	a,(de)
+   02B3 4F                  626 	ld	c,a
+   02B4 13                  627 	inc	de
+   02B5 1A                  628 	ld	a,(de)
+   02B6 47                  629 	ld	b,a
+   02B7 F8 03               630 	ldhl	sp,#3
+   02B9 2A                  631 	ld	a,(hl+)
+   02BA 66                  632 	ld	h,(hl)
+   02BB 6F                  633 	ld	l,a
+   02BC E5                  634 	push	hl
+   02BD C5                  635 	push	bc
+   02BE 3E 01               636 	ld	a,#0x01
+   02C0 F5                  637 	push	af
+   02C1 33                  638 	inc	sp
+   02C2 CDr00r00            639 	call	_SpriteManagerAdd
+   02C5 E8 05               640 	add	sp, #5
+                            641 ;SpritePlayerLittle.c:113: SpriteManagerRemoveSprite(THIS);
+   02C7 21r00r00            642 	ld	hl,#_THIS
+   02CA 2A                  643 	ld	a,(hl+)
+   02CB 66                  644 	ld	h,(hl)
+   02CC 6F                  645 	ld	l,a
+   02CD E5                  646 	push	hl
+   02CE CDr00r00            647 	call	_SpriteManagerRemoveSprite
+   02D1 E8 02               648 	add	sp, #2
+   02D3                     649 00126$:
+                            650 ;SpritePlayerLittle.c:116: if (data->ygrav < 0) {
+   02D3 D1                  651 	pop	de
+   02D4 D5                  652 	push	de
+   02D5 1A                  653 	ld	a,(de)
+   02D6 4F                  654 	ld	c,a
+   02D7 13                  655 	inc	de
+   02D8 1A                  656 	ld	a,(de)
+   02D9 47                  657 	ld	b,a
+   02DA 3E 00               658 	ld	a,#0x00
+   02DC 5F                  659 	ld	e,a
+   02DD 78                  660 	ld	a,b
+   02DE 57                  661 	ld	d,a
+   02DF CB 78               662 	bit	7, b
+   02E1 28 0E               663 	jr	Z,00129$
+                            664 ;SpritePlayerLittle.c:117: data->ygrav = -data->ygrav;
+   02E3 AF                  665 	xor	a, a
+   02E4 91                  666 	sub	a, c
+   02E5 4F                  667 	ld	c,a
+   02E6 3E 00               668 	ld	a, #0x00
+   02E8 98                  669 	sbc	a, b
+   02E9 47                  670 	ld	b,a
+   02EA E1                  671 	pop	hl
+   02EB E5                  672 	push	hl
+   02EC 71                  673 	ld	(hl),c
+   02ED 23                  674 	inc	hl
+   02EE 70                  675 	ld	(hl),b
+   02EF 18 07               676 	jr	00130$
+   02F1                     677 00129$:
+                            678 ;SpritePlayerLittle.c:119: data->ygrav = -VERTICALBOUNCE;
+   02F1 E1                  679 	pop	hl
+   02F2 E5                  680 	push	hl
+   02F3 36 A8               681 	ld	(hl),#0xa8
+   02F5 23                  682 	inc	hl
+   02F6 36 FD               683 	ld	(hl),#0xfd
+   02F8                     684 00130$:
+                            685 ;SpritePlayerLittle.c:121: PlayFx(CHANNEL_1, 10, 0x23, 0x07, 0x7b, 0xab, 0x84);
+   02F8 21 84 00            686 	ld	hl,#0x0084
+   02FB E5                  687 	push	hl
+   02FC 2E AB               688 	ld	l, #0xab
+   02FE E5                  689 	push	hl
+   02FF 2E 7B               690 	ld	l, #0x7b
+   0301 E5                  691 	push	hl
+   0302 2E 07               692 	ld	l, #0x07
+   0304 E5                  693 	push	hl
+   0305 2E 23               694 	ld	l, #0x23
+   0307 E5                  695 	push	hl
+   0308 21 00 0A            696 	ld	hl,#0x0a00
+   030B E5                  697 	push	hl
+   030C CDr00r00            698 	call	_PlayFx
+   030F E8 0C               699 	add	sp, #12
+   0311                     700 00132$:
+                            701 ;SpritePlayerLittle.c:124: tile_collision = TranslateSprite(THIS, incx, 0);
+   0311 AF                  702 	xor	a, a
+   0312 F5                  703 	push	af
+   0313 33                  704 	inc	sp
+   0314 F8 03               705 	ldhl	sp,#3
+   0316 7E                  706 	ld	a,(hl)
+   0317 F5                  707 	push	af
+   0318 33                  708 	inc	sp
+   0319 21r00r00            709 	ld	hl,#_THIS
+   031C 2A                  710 	ld	a,(hl+)
+   031D 66                  711 	ld	h,(hl)
+   031E 6F                  712 	ld	l,a
+   031F E5                  713 	push	hl
+   0320 CDr00r00            714 	call	_TranslateSprite
+   0323 E8 04               715 	add	sp, #4
+   0325 4B                  716 	ld	c,e
+                            717 ;SpritePlayerLittle.c:125: if ((tile_collision != 0))
+   0326 79                  718 	ld	a,c
+   0327 B7                  719 	or	a, a
+   0328 CArC1r03            720 	jp	Z,00141$
+                            721 ;SpritePlayerLittle.c:128: if ((tile_collision >= 19) && (tile_collision <= 22)) {
+   032B 79                  722 	ld	a,c
+   032C D6 13               723 	sub	a, #0x13
+   032E 38 12               724 	jr	C,00134$
+   0330 3E 16               725 	ld	a,#0x16
+   0332 91                  726 	sub	a, c
+   0333 38 0D               727 	jr	C,00134$
+                            728 ;SpritePlayerLittle.c:129: level++;
+   0335 21r00r00            729 	ld	hl,#_level
+   0338 34                  730 	inc	(hl)
+                            731 ;SpritePlayerLittle.c:130: SetState(STATE_GAME);
+   0339 C5                  732 	push	bc
+   033A AF                  733 	xor	a, a
+   033B F5                  734 	push	af
+   033C 33                  735 	inc	sp
+   033D CDr00r00            736 	call	_SetState
+   0340 33                  737 	inc	sp
+   0341 C1                  738 	pop	bc
+   0342                     739 00134$:
+                            740 ;SpritePlayerLittle.c:132: if ((tile_collision == 14) || (tile_collision == 15)) {
+   0342 79                  741 	ld	a,c
+   0343 FE 0E               742 	cp	a,#0x0e
+   0345 28 05               743 	jr	Z,00136$
+   0347 D6 0F               744 	sub	a, #0x0f
+   0349 C2r90r03            745 	jp	NZ,00137$
+   034C                     746 00136$:
+                            747 ;SpritePlayerLittle.c:43: struct PlayerCustomData* data = (struct PlayerCustomData*)THIS->custom_data;
+   034C 21r01r00            748 	ld	hl,#_THIS + 1
+   034F 2B                  749 	dec	hl
+   0350 4E                  750 	ld	c,(hl)
+   0351 23                  751 	inc	hl
+   0352 46                  752 	ld	b,(hl)
+                            753 ;SpritePlayerLittle.c:133: SpriteManagerAdd(SPRITE_EXPLOSION, THIS->x, THIS->y);
+   0353 21 09 00            754 	ld	hl,#0x0009
+   0356 09                  755 	add	hl,bc
+   0357 7D                  756 	ld	a,l
+   0358 54                  757 	ld	d,h
+   0359 F8 03               758 	ldhl	sp,#3
+   035B 22                  759 	ld	(hl+),a
+   035C 72                  760 	ld	(hl),d
+   035D 2B                  761 	dec	hl
+   035E 5E                  762 	ld	e,(hl)
+   035F 23                  763 	inc	hl
+   0360 56                  764 	ld	d,(hl)
+   0361 1A                  765 	ld	a,(de)
+   0362 2B                  766 	dec	hl
+   0363 22                  767 	ld	(hl+),a
+   0364 13                  768 	inc	de
+   0365 1A                  769 	ld	a,(de)
+   0366 77                  770 	ld	(hl),a
+   0367 21 07 00            771 	ld	hl,#0x0007
+   036A 09                  772 	add	hl,bc
+   036B 4D                  773 	ld	c,l
+   036C 44                  774 	ld	b,h
+   036D 59                  775 	ld	e, c
+   036E 50                  776 	ld	d, b
+   036F 1A                  777 	ld	a,(de)
+   0370 4F                  778 	ld	c,a
+   0371 13                  779 	inc	de
+   0372 1A                  780 	ld	a,(de)
+   0373 47                  781 	ld	b,a
+   0374 F8 03               782 	ldhl	sp,#3
+   0376 2A                  783 	ld	a,(hl+)
+   0377 66                  784 	ld	h,(hl)
+   0378 6F                  785 	ld	l,a
+   0379 E5                  786 	push	hl
+   037A C5                  787 	push	bc
+   037B 3E 01               788 	ld	a,#0x01
+   037D F5                  789 	push	af
+   037E 33                  790 	inc	sp
+   037F CDr00r00            791 	call	_SpriteManagerAdd
+   0382 E8 05               792 	add	sp, #5
+                            793 ;SpritePlayerLittle.c:134: SpriteManagerRemoveSprite(THIS);
+   0384 21r00r00            794 	ld	hl,#_THIS
+   0387 2A                  795 	ld	a,(hl+)
+   0388 66                  796 	ld	h,(hl)
+   0389 6F                  797 	ld	l,a
+   038A E5                  798 	push	hl
+   038B CDr00r00            799 	call	_SpriteManagerRemoveSprite
+   038E E8 02               800 	add	sp, #2
+   0390                     801 00137$:
+                            802 ;SpritePlayerLittle.c:136: data->xvel = -data->xvel;
+   0390 F8 06               803 	ldhl	sp,#(7 - 1)
+   0392 5E                  804 	ld	e,(hl)
+   0393 23                  805 	inc	hl
+   0394 56                  806 	ld	d,(hl)
+   0395 1A                  807 	ld	a,(de)
+   0396 4F                  808 	ld	c,a
+   0397 13                  809 	inc	de
+   0398 1A                  810 	ld	a,(de)
+   0399 47                  811 	ld	b,a
+   039A AF                  812 	xor	a, a
+   039B 91                  813 	sub	a, c
+   039C 4F                  814 	ld	c,a
+   039D 3E 00               815 	ld	a, #0x00
+   039F 98                  816 	sbc	a, b
+   03A0 47                  817 	ld	b,a
+   03A1 2B                  818 	dec	hl
+   03A2 2A                  819 	ld	a,(hl+)
+   03A3 66                  820 	ld	h,(hl)
+   03A4 6F                  821 	ld	l,a
+   03A5 71                  822 	ld	(hl),c
+   03A6 23                  823 	inc	hl
+   03A7 70                  824 	ld	(hl),b
+                            825 ;SpritePlayerLittle.c:137: PlayFx(CHANNEL_1, 10, 0x23, 0x07, 0x7b, 0xab, 0x84);
+   03A8 21 84 00            826 	ld	hl,#0x0084
+   03AB E5                  827 	push	hl
+   03AC 2E AB               828 	ld	l, #0xab
+   03AE E5                  829 	push	hl
+   03AF 2E 7B               830 	ld	l, #0x7b
+   03B1 E5                  831 	push	hl
+   03B2 2E 07               832 	ld	l, #0x07
+   03B4 E5                  833 	push	hl
+   03B5 2E 23               834 	ld	l, #0x23
+   03B7 E5                  835 	push	hl
+   03B8 21 00 0A            836 	ld	hl,#0x0a00
+   03BB E5                  837 	push	hl
+   03BC CDr00r00            838 	call	_PlayFx
+   03BF E8 0C               839 	add	sp, #12
+   03C1                     840 00141$:
+   03C1 E8 0A               841 	add	sp, #10
+   03C3 C9                  842 	ret
+                            843 ;SpritePlayerLittle.c:146: void Destroy_SPRITE_PLAYERLITTLE() {
+                            844 ;	---------------------------------
+                            845 ; Function Destroy_SPRITE_PLAYERLITTLE
+                            846 ; ---------------------------------
+   03C4                     847 _Destroy_SPRITE_PLAYERLITTLE::
+                            848 ;SpritePlayerLittle.c:148: }
+   03C4 C9                  849 	ret
+                            850 	.area _CODE_2
+                            851 	.area _CABS (ABS)

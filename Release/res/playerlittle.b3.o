@@ -1,0 +1,36 @@
+XL2
+H 8 areas 2 global symbols
+M playerlittle_b3
+O -mgbz80
+S .__.ABS. Def0000
+A _CODE size 0 flags 0 addr 0
+A _DATA size 0 flags 0 addr 0
+A _DABS size 0 flags 8 addr 0
+A _HOME size 0 flags 0 addr 0
+A _GSINIT size 0 flags 0 addr 0
+A _GSFINAL size 0 flags 0 addr 0
+A _CODE_3 size 80 flags 0 addr 0
+S _playerlittle Def0000
+A _CABS size 0 flags 8 addr 0
+T 00 00
+R 00 00 06 00
+T 00 00 18 18 24 7E 62 5E EF 91 F7 89 46 7A 24 7E
+R 00 00 06 00
+T 0E 00 18 18 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 06 00
+T 1C 00 00 00 00 00 18 18 34 6E 72 4E F1 8F 8F F1
+R 00 00 06 00
+T 2A 00 4E 72 2C 76 18 18 00 00 00 00 00 00 00 00
+R 00 00 06 00
+T 38 00 00 00 00 00 00 00 00 00 18 18 3C 66 5E 62
+R 00 00 06 00
+T 46 00 91 EF 89 F7 7A 46 3C 66 18 18 00 00 00 00
+R 00 00 06 00
+T 54 00 00 00 00 00 00 00 00 00 00 00 00 00 18 18
+R 00 00 06 00
+T 62 00 2C 76 4E 72 8F F1 F1 8F 72 4E 34 6E 18 18
+R 00 00 06 00
+T 70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+R 00 00 06 00
+T 7E 00 00 00
+R 00 00 06 00

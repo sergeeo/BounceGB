@@ -1,0 +1,562 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.6.0 #9615 (MINGW64)
+                              4 ;--------------------------------------------------------
+                              5 	.module StateGame
+                              6 	.optsdcc -mgbz80
+                              7 	
+                              8 ;--------------------------------------------------------
+                              9 ; Public variables in this module
+                             10 ;--------------------------------------------------------
+                             11 	.globl _SpriteManagerAdd
+                             12 	.globl _SpriteManagerLoad
+                             13 	.globl _ScrollFindTile
+                             14 	.globl _InitScrollColor
+                             15 	.globl _ZInitScrollTilesColor
+                             16 	.globl _PlayMusic
+                             17 	.globl _SetState
+                             18 	.globl _collision_tiles
+                             19 	.globl _bank_STATE_GAME
+                             20 	.globl _Start_STATE_GAME
+                             21 	.globl _Update_STATE_GAME
+                             22 ;--------------------------------------------------------
+                             23 ; ram data
+                             24 ;--------------------------------------------------------
+                             25 	.area _DATA
+   0000                      26 _bank_STATE_GAME::
+   0000                      27 	.ds 1
+   0001                      28 _collision_tiles::
+   0001                      29 	.ds 19
+                             30 ;--------------------------------------------------------
+                             31 ; absolute external ram data
+                             32 ;--------------------------------------------------------
+                             33 	.area _DABS (ABS)
+                             34 ;--------------------------------------------------------
+                             35 ; global & static initialisations
+                             36 ;--------------------------------------------------------
+                             37 	.area _HOME
+                             38 	.area _GSINIT
+                             39 	.area _GSFINAL
+                             40 	.area _GSINIT
+                             41 ;StateGame.c:3: UINT8 bank_STATE_GAME = 2;
+   0000 21r00r00             42 	ld	hl,#_bank_STATE_GAME
+   0003 36 02                43 	ld	(hl),#0x02
+                             44 ;StateGame.c:22: UINT8 collision_tiles[] = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 19, 20, 21, 22, 0 };
+   0005 21r01r00             45 	ld	hl,#_collision_tiles
+   0008 36 02                46 	ld	(hl),#0x02
+   000A 21r02r00             47 	ld	hl,#(_collision_tiles + 0x0001)
+   000D 36 03                48 	ld	(hl),#0x03
+   000F 21r03r00             49 	ld	hl,#(_collision_tiles + 0x0002)
+   0012 36 04                50 	ld	(hl),#0x04
+   0014 21r04r00             51 	ld	hl,#(_collision_tiles + 0x0003)
+   0017 36 05                52 	ld	(hl),#0x05
+   0019 21r05r00             53 	ld	hl,#(_collision_tiles + 0x0004)
+   001C 36 06                54 	ld	(hl),#0x06
+   001E 21r06r00             55 	ld	hl,#(_collision_tiles + 0x0005)
+   0021 36 07                56 	ld	(hl),#0x07
+   0023 21r07r00             57 	ld	hl,#(_collision_tiles + 0x0006)
+   0026 36 08                58 	ld	(hl),#0x08
+   0028 21r08r00             59 	ld	hl,#(_collision_tiles + 0x0007)
+   002B 36 09                60 	ld	(hl),#0x09
+   002D 21r09r00             61 	ld	hl,#(_collision_tiles + 0x0008)
+   0030 36 0A                62 	ld	(hl),#0x0a
+   0032 21r0Ar00             63 	ld	hl,#(_collision_tiles + 0x0009)
+   0035 36 0B                64 	ld	(hl),#0x0b
+   0037 21r0Br00             65 	ld	hl,#(_collision_tiles + 0x000a)
+   003A 36 0C                66 	ld	(hl),#0x0c
+   003C 21r0Cr00             67 	ld	hl,#(_collision_tiles + 0x000b)
+   003F 36 0D                68 	ld	(hl),#0x0d
+   0041 21r0Dr00             69 	ld	hl,#(_collision_tiles + 0x000c)
+   0044 36 0E                70 	ld	(hl),#0x0e
+   0046 21r0Er00             71 	ld	hl,#(_collision_tiles + 0x000d)
+   0049 36 0F                72 	ld	(hl),#0x0f
+   004B 21r0Fr00             73 	ld	hl,#(_collision_tiles + 0x000e)
+   004E 36 13                74 	ld	(hl),#0x13
+   0050 21r10r00             75 	ld	hl,#(_collision_tiles + 0x000f)
+   0053 36 14                76 	ld	(hl),#0x14
+   0055 21r11r00             77 	ld	hl,#(_collision_tiles + 0x0010)
+   0058 36 15                78 	ld	(hl),#0x15
+   005A 21r12r00             79 	ld	hl,#(_collision_tiles + 0x0011)
+   005D 36 16                80 	ld	(hl),#0x16
+   005F 21r13r00             81 	ld	hl,#(_collision_tiles + 0x0012)
+   0062 36 00                82 	ld	(hl),#0x00
+                             83 ;--------------------------------------------------------
+                             84 ; Home
+                             85 ;--------------------------------------------------------
+                             86 	.area _HOME
+                             87 	.area _HOME
+                             88 ;--------------------------------------------------------
+                             89 ; code
+                             90 ;--------------------------------------------------------
+                             91 	.area _CODE_2
+                             92 ;StateGame.c:24: void Start_STATE_GAME() {
+                             93 ;	---------------------------------
+                             94 ; Function Start_STATE_GAME
+                             95 ; ---------------------------------
+   0000                      96 _Start_STATE_GAME::
+   0000 E8 FC                97 	add	sp, #-4
+                             98 ;StateGame.c:29: NR52_REG = 0x80; //Enables sound, you should always setup this first
+   0002 21 26 FF             99 	ld	hl,#0xff26
+   0005 36 80               100 	ld	(hl),#0x80
+                            101 ;StateGame.c:30: NR51_REG = 0xFF; //Enables all channels (left and right)
+   0007 2E 25               102 	ld	l, #0x25
+   0009 36 FF               103 	ld	(hl),#0xff
+                            104 ;StateGame.c:31: NR50_REG = 0x77; //Max volume
+   000B 2E 24               105 	ld	l, #0x24
+   000D 36 77               106 	ld	(hl),#0x77
+                            107 ;StateGame.c:33: PlayMusic(levelmusic_mod_Data, 3, 1);
+   000F 21 03 01            108 	ld	hl,#0x0103
+   0012 E5                  109 	push	hl
+   0013 21r00r00            110 	ld	hl,#_levelmusic_mod_Data
+   0016 E5                  111 	push	hl
+   0017 CDr00r00            112 	call	_PlayMusic
+   001A E8 04               113 	add	sp, #4
+                            114 ;StateGame.c:35: SPRITES_8x16;
+   001C 11 40 FF            115 	ld	de,#0xff40
+   001F 1A                  116 	ld	a,(de)
+   0020 4F                  117 	ld	c,a
+   0021 06 00               118 	ld	b,#0x00
+   0023 79                  119 	ld	a,c
+   0024 CB D7               120 	set	2, a
+   0026 4F                  121 	ld	c,a
+   0027 21 40 FF            122 	ld	hl,#0xff40
+   002A 71                  123 	ld	(hl),c
+                            124 ;StateGame.c:36: for(i = 0; i != n_sprite_types; ++ i) {
+   002B 06 00               125 	ld	b,#0x00
+   002D                     126 00113$:
+   002D 21r00r00            127 	ld	hl,#_n_sprite_types
+   0030 7E                  128 	ld	a,(hl)
+   0031 90                  129 	sub	a, b
+   0032 28 0B               130 	jr	Z,00101$
+                            131 ;StateGame.c:37: SpriteManagerLoad(i);
+   0034 C5                  132 	push	bc
+   0035 C5                  133 	push	bc
+   0036 33                  134 	inc	sp
+   0037 CDr00r00            135 	call	_SpriteManagerLoad
+   003A 33                  136 	inc	sp
+   003B C1                  137 	pop	bc
+                            138 ;StateGame.c:36: for(i = 0; i != n_sprite_types; ++ i) {
+   003C 04                  139 	inc	b
+   003D 18 EE               140 	jr	00113$
+   003F                     141 00101$:
+                            142 ;StateGame.c:39: SHOW_SPRITES;
+   003F 11 40 FF            143 	ld	de,#0xff40
+   0042 1A                  144 	ld	a,(de)
+   0043 4F                  145 	ld	c,a
+   0044 06 00               146 	ld	b,#0x00
+   0046 79                  147 	ld	a,c
+   0047 CB CF               148 	set	1, a
+   0049 4F                  149 	ld	c,a
+   004A 21 40 FF            150 	ld	hl,#0xff40
+   004D 71                  151 	ld	(hl),c
+                            152 ;StateGame.c:41: if(level ==1) {
+   004E 21r00r00            153 	ld	hl,#_level
+   0051 7E                  154 	ld	a,(hl)
+   0052 3D                  155 	dec	a
+   0053 C2rEBr00            156 	jp	NZ,00103$
+                            157 ;StateGame.c:42: ScrollFindTile(mapWidth, map, 3, 18, 0, 0, mapWidth, mapHeight, &startX, &startY);
+   0056 F8 00               158 	ldhl	sp,#0
+   0058 4D                  159 	ld	c,l
+   0059 44                  160 	ld	b,h
+   005A F8 02               161 	ldhl	sp,#2
+   005C 5D                  162 	ld	e,l
+   005D 54                  163 	ld	d,h
+   005E C5                  164 	push	bc
+   005F D5                  165 	push	de
+   0060 21 28 12            166 	ld	hl,#0x1228
+   0063 E5                  167 	push	hl
+   0064 21 00 00            168 	ld	hl,#0x0000
+   0067 E5                  169 	push	hl
+   0068 21 03 12            170 	ld	hl,#0x1203
+   006B E5                  171 	push	hl
+   006C 21r00r00            172 	ld	hl,#_map
+   006F E5                  173 	push	hl
+   0070 21 28 00            174 	ld	hl,#0x0028
+   0073 E5                  175 	push	hl
+   0074 CDr00r00            176 	call	_ScrollFindTile
+   0077 E8 0E               177 	add	sp, #14
+                            178 ;StateGame.c:43: scroll_target = SpriteManagerAdd(SPRITE_PLAYERLITTLE, startX << 3, startY << 3);
+   0079 C1                  179 	pop	bc
+   007A C5                  180 	push	bc
+   007B CB 21               181 	sla	c
+   007D CB 10               182 	rl	b
+   007F CB 21               183 	sla	c
+   0081 CB 10               184 	rl	b
+   0083 CB 21               185 	sla	c
+   0085 CB 10               186 	rl	b
+   0087 F8 02               187 	ldhl	sp,#(3 - 1)
+   0089 5E                  188 	ld	e,(hl)
+   008A 23                  189 	inc	hl
+   008B 56                  190 	ld	d,(hl)
+   008C CB 23               191 	sla	e
+   008E CB 12               192 	rl	d
+   0090 CB 23               193 	sla	e
+   0092 CB 12               194 	rl	d
+   0094 CB 23               195 	sla	e
+   0096 CB 12               196 	rl	d
+   0098 C5                  197 	push	bc
+   0099 D5                  198 	push	de
+   009A AF                  199 	xor	a, a
+   009B F5                  200 	push	af
+   009C 33                  201 	inc	sp
+   009D CDr00r00            202 	call	_SpriteManagerAdd
+   00A0 E8 05               203 	add	sp, #5
+   00A2 21r00r00            204 	ld	hl,#_scroll_target
+   00A5 73                  205 	ld	(hl),e
+   00A6 23                  206 	inc	hl
+   00A7 72                  207 	ld	(hl),d
+                            208 ;StateGame.c:45: InitScrollTiles(0, 104, tiles, 3);
+   00A8 21 00 00            209 	ld	hl,#0x0000
+   00AB E5                  210 	push	hl
+   00AC 3E 03               211 	ld	a,#0x03
+   00AE F5                  212 	push	af
+   00AF 33                  213 	inc	sp
+   00B0 21r00r00            214 	ld	hl,#_tiles
+   00B3 E5                  215 	push	hl
+   00B4 21 00 68            216 	ld	hl,#0x6800
+   00B7 E5                  217 	push	hl
+   00B8 CDr00r00            218 	call	_ZInitScrollTilesColor
+   00BB E8 07               219 	add	sp, #7
+                            220 ;StateGame.c:46: InitScroll(mapWidth, mapHeight, map, collision_tiles, 0, 3);
+   00BD 21 00 00            221 	ld	hl,#0x0000
+   00C0 E5                  222 	push	hl
+   00C1 3E 03               223 	ld	a,#0x03
+   00C3 F5                  224 	push	af
+   00C4 33                  225 	inc	sp
+   00C5 2E 00               226 	ld	l, #0x00
+   00C7 E5                  227 	push	hl
+   00C8 21r01r00            228 	ld	hl,#_collision_tiles
+   00CB E5                  229 	push	hl
+   00CC 21r00r00            230 	ld	hl,#_map
+   00CF E5                  231 	push	hl
+   00D0 21 12 00            232 	ld	hl,#0x0012
+   00D3 E5                  233 	push	hl
+   00D4 2E 28               234 	ld	l, #0x28
+   00D6 E5                  235 	push	hl
+   00D7 CDr00r00            236 	call	_InitScrollColor
+   00DA E8 0D               237 	add	sp, #13
+                            238 ;StateGame.c:47: SHOW_BKG;
+   00DC 11 40 FF            239 	ld	de,#0xff40
+   00DF 1A                  240 	ld	a,(de)
+   00E0 4F                  241 	ld	c,a
+   00E1 06 00               242 	ld	b,#0x00
+   00E3 79                  243 	ld	a,c
+   00E4 CB C7               244 	set	0, a
+   00E6 4F                  245 	ld	c,a
+   00E7 21 40 FF            246 	ld	hl,#0xff40
+   00EA 71                  247 	ld	(hl),c
+   00EB                     248 00103$:
+                            249 ;StateGame.c:49: if (level == 3) {
+   00EB 21r00r00            250 	ld	hl,#_level
+   00EE 7E                  251 	ld	a,(hl)
+   00EF D6 03               252 	sub	a, #0x03
+   00F1 C2r89r01            253 	jp	NZ,00105$
+                            254 ;StateGame.c:50: ScrollFindTile(map2Width, map2, 3, 18, 0, 0, map2Width, map2Height, &startX, &startY);
+   00F4 F8 00               255 	ldhl	sp,#0
+   00F6 4D                  256 	ld	c,l
+   00F7 44                  257 	ld	b,h
+   00F8 F8 02               258 	ldhl	sp,#2
+   00FA 5D                  259 	ld	e,l
+   00FB 54                  260 	ld	d,h
+   00FC C5                  261 	push	bc
+   00FD D5                  262 	push	de
+   00FE 21 28 12            263 	ld	hl,#0x1228
+   0101 E5                  264 	push	hl
+   0102 21 00 00            265 	ld	hl,#0x0000
+   0105 E5                  266 	push	hl
+   0106 21 03 12            267 	ld	hl,#0x1203
+   0109 E5                  268 	push	hl
+   010A 21r00r00            269 	ld	hl,#_map2
+   010D E5                  270 	push	hl
+   010E 21 28 00            271 	ld	hl,#0x0028
+   0111 E5                  272 	push	hl
+   0112 CDr00r00            273 	call	_ScrollFindTile
+   0115 E8 0E               274 	add	sp, #14
+                            275 ;StateGame.c:51: scroll_target = SpriteManagerAdd(SPRITE_PLAYERLITTLE, startX << 3, startY << 3);
+   0117 C1                  276 	pop	bc
+   0118 C5                  277 	push	bc
+   0119 CB 21               278 	sla	c
+   011B CB 10               279 	rl	b
+   011D CB 21               280 	sla	c
+   011F CB 10               281 	rl	b
+   0121 CB 21               282 	sla	c
+   0123 CB 10               283 	rl	b
+   0125 F8 02               284 	ldhl	sp,#(3 - 1)
+   0127 5E                  285 	ld	e,(hl)
+   0128 23                  286 	inc	hl
+   0129 56                  287 	ld	d,(hl)
+   012A CB 23               288 	sla	e
+   012C CB 12               289 	rl	d
+   012E CB 23               290 	sla	e
+   0130 CB 12               291 	rl	d
+   0132 CB 23               292 	sla	e
+   0134 CB 12               293 	rl	d
+   0136 C5                  294 	push	bc
+   0137 D5                  295 	push	de
+   0138 AF                  296 	xor	a, a
+   0139 F5                  297 	push	af
+   013A 33                  298 	inc	sp
+   013B CDr00r00            299 	call	_SpriteManagerAdd
+   013E E8 05               300 	add	sp, #5
+   0140 21r00r00            301 	ld	hl,#_scroll_target
+   0143 73                  302 	ld	(hl),e
+   0144 23                  303 	inc	hl
+   0145 72                  304 	ld	(hl),d
+                            305 ;StateGame.c:53: InitScrollTiles(0, 104, tiles, 3);
+   0146 21 00 00            306 	ld	hl,#0x0000
+   0149 E5                  307 	push	hl
+   014A 3E 03               308 	ld	a,#0x03
+   014C F5                  309 	push	af
+   014D 33                  310 	inc	sp
+   014E 21r00r00            311 	ld	hl,#_tiles
+   0151 E5                  312 	push	hl
+   0152 21 00 68            313 	ld	hl,#0x6800
+   0155 E5                  314 	push	hl
+   0156 CDr00r00            315 	call	_ZInitScrollTilesColor
+   0159 E8 07               316 	add	sp, #7
+                            317 ;StateGame.c:54: InitScroll(map2Width, map2Height, map2, collision_tiles, 0, 3);
+   015B 21 00 00            318 	ld	hl,#0x0000
+   015E E5                  319 	push	hl
+   015F 3E 03               320 	ld	a,#0x03
+   0161 F5                  321 	push	af
+   0162 33                  322 	inc	sp
+   0163 2E 00               323 	ld	l, #0x00
+   0165 E5                  324 	push	hl
+   0166 21r01r00            325 	ld	hl,#_collision_tiles
+   0169 E5                  326 	push	hl
+   016A 21r00r00            327 	ld	hl,#_map2
+   016D E5                  328 	push	hl
+   016E 21 12 00            329 	ld	hl,#0x0012
+   0171 E5                  330 	push	hl
+   0172 2E 28               331 	ld	l, #0x28
+   0174 E5                  332 	push	hl
+   0175 CDr00r00            333 	call	_InitScrollColor
+   0178 E8 0D               334 	add	sp, #13
+                            335 ;StateGame.c:55: SHOW_BKG;
+   017A 11 40 FF            336 	ld	de,#0xff40
+   017D 1A                  337 	ld	a,(de)
+   017E 4F                  338 	ld	c,a
+   017F 06 00               339 	ld	b,#0x00
+   0181 79                  340 	ld	a,c
+   0182 CB C7               341 	set	0, a
+   0184 4F                  342 	ld	c,a
+   0185 21 40 FF            343 	ld	hl,#0xff40
+   0188 71                  344 	ld	(hl),c
+   0189                     345 00105$:
+                            346 ;StateGame.c:57: if (level == 2) {
+   0189 21r00r00            347 	ld	hl,#_level
+   018C 7E                  348 	ld	a,(hl)
+   018D D6 02               349 	sub	a, #0x02
+   018F C2r27r02            350 	jp	NZ,00107$
+                            351 ;StateGame.c:58: ScrollFindTile(map3Width, map3, 3, 18, 0, 0, map3Width, map3Height, &startX, &startY);
+   0192 F8 00               352 	ldhl	sp,#0
+   0194 4D                  353 	ld	c,l
+   0195 44                  354 	ld	b,h
+   0196 F8 02               355 	ldhl	sp,#2
+   0198 5D                  356 	ld	e,l
+   0199 54                  357 	ld	d,h
+   019A C5                  358 	push	bc
+   019B D5                  359 	push	de
+   019C 21 28 12            360 	ld	hl,#0x1228
+   019F E5                  361 	push	hl
+   01A0 21 00 00            362 	ld	hl,#0x0000
+   01A3 E5                  363 	push	hl
+   01A4 21 03 12            364 	ld	hl,#0x1203
+   01A7 E5                  365 	push	hl
+   01A8 21r00r00            366 	ld	hl,#_map3
+   01AB E5                  367 	push	hl
+   01AC 21 28 00            368 	ld	hl,#0x0028
+   01AF E5                  369 	push	hl
+   01B0 CDr00r00            370 	call	_ScrollFindTile
+   01B3 E8 0E               371 	add	sp, #14
+                            372 ;StateGame.c:59: scroll_target = SpriteManagerAdd(SPRITE_PLAYERLITTLE, startX << 3, startY << 3);
+   01B5 C1                  373 	pop	bc
+   01B6 C5                  374 	push	bc
+   01B7 CB 21               375 	sla	c
+   01B9 CB 10               376 	rl	b
+   01BB CB 21               377 	sla	c
+   01BD CB 10               378 	rl	b
+   01BF CB 21               379 	sla	c
+   01C1 CB 10               380 	rl	b
+   01C3 F8 02               381 	ldhl	sp,#(3 - 1)
+   01C5 5E                  382 	ld	e,(hl)
+   01C6 23                  383 	inc	hl
+   01C7 56                  384 	ld	d,(hl)
+   01C8 CB 23               385 	sla	e
+   01CA CB 12               386 	rl	d
+   01CC CB 23               387 	sla	e
+   01CE CB 12               388 	rl	d
+   01D0 CB 23               389 	sla	e
+   01D2 CB 12               390 	rl	d
+   01D4 C5                  391 	push	bc
+   01D5 D5                  392 	push	de
+   01D6 AF                  393 	xor	a, a
+   01D7 F5                  394 	push	af
+   01D8 33                  395 	inc	sp
+   01D9 CDr00r00            396 	call	_SpriteManagerAdd
+   01DC E8 05               397 	add	sp, #5
+   01DE 21r00r00            398 	ld	hl,#_scroll_target
+   01E1 73                  399 	ld	(hl),e
+   01E2 23                  400 	inc	hl
+   01E3 72                  401 	ld	(hl),d
+                            402 ;StateGame.c:61: InitScrollTiles(0, 104, tiles, 3);
+   01E4 21 00 00            403 	ld	hl,#0x0000
+   01E7 E5                  404 	push	hl
+   01E8 3E 03               405 	ld	a,#0x03
+   01EA F5                  406 	push	af
+   01EB 33                  407 	inc	sp
+   01EC 21r00r00            408 	ld	hl,#_tiles
+   01EF E5                  409 	push	hl
+   01F0 21 00 68            410 	ld	hl,#0x6800
+   01F3 E5                  411 	push	hl
+   01F4 CDr00r00            412 	call	_ZInitScrollTilesColor
+   01F7 E8 07               413 	add	sp, #7
+                            414 ;StateGame.c:62: InitScroll(mapWidth, mapHeight, map3, collision_tiles, 0, 3);
+   01F9 21 00 00            415 	ld	hl,#0x0000
+   01FC E5                  416 	push	hl
+   01FD 3E 03               417 	ld	a,#0x03
+   01FF F5                  418 	push	af
+   0200 33                  419 	inc	sp
+   0201 2E 00               420 	ld	l, #0x00
+   0203 E5                  421 	push	hl
+   0204 21r01r00            422 	ld	hl,#_collision_tiles
+   0207 E5                  423 	push	hl
+   0208 21r00r00            424 	ld	hl,#_map3
+   020B E5                  425 	push	hl
+   020C 21 12 00            426 	ld	hl,#0x0012
+   020F E5                  427 	push	hl
+   0210 2E 28               428 	ld	l, #0x28
+   0212 E5                  429 	push	hl
+   0213 CDr00r00            430 	call	_InitScrollColor
+   0216 E8 0D               431 	add	sp, #13
+                            432 ;StateGame.c:63: SHOW_BKG;
+   0218 11 40 FF            433 	ld	de,#0xff40
+   021B 1A                  434 	ld	a,(de)
+   021C 4F                  435 	ld	c,a
+   021D 06 00               436 	ld	b,#0x00
+   021F 79                  437 	ld	a,c
+   0220 CB C7               438 	set	0, a
+   0222 4F                  439 	ld	c,a
+   0223 21 40 FF            440 	ld	hl,#0xff40
+   0226 71                  441 	ld	(hl),c
+   0227                     442 00107$:
+                            443 ;StateGame.c:65: if (level == 4) {
+   0227 21r00r00            444 	ld	hl,#_level
+   022A 7E                  445 	ld	a,(hl)
+   022B D6 04               446 	sub	a, #0x04
+   022D C2rC5r02            447 	jp	NZ,00109$
+                            448 ;StateGame.c:66: ScrollFindTile(map4Width, map4, 3, 18, 0, 0, map4Width, map4Height, &startX, &startY);
+   0230 F8 00               449 	ldhl	sp,#0
+   0232 4D                  450 	ld	c,l
+   0233 44                  451 	ld	b,h
+   0234 F8 02               452 	ldhl	sp,#2
+   0236 5D                  453 	ld	e,l
+   0237 54                  454 	ld	d,h
+   0238 C5                  455 	push	bc
+   0239 D5                  456 	push	de
+   023A 21 28 12            457 	ld	hl,#0x1228
+   023D E5                  458 	push	hl
+   023E 21 00 00            459 	ld	hl,#0x0000
+   0241 E5                  460 	push	hl
+   0242 21 03 12            461 	ld	hl,#0x1203
+   0245 E5                  462 	push	hl
+   0246 21r00r00            463 	ld	hl,#_map4
+   0249 E5                  464 	push	hl
+   024A 21 28 00            465 	ld	hl,#0x0028
+   024D E5                  466 	push	hl
+   024E CDr00r00            467 	call	_ScrollFindTile
+   0251 E8 0E               468 	add	sp, #14
+                            469 ;StateGame.c:67: scroll_target = SpriteManagerAdd(SPRITE_PLAYERLITTLE, startX << 3, startY << 3);
+   0253 C1                  470 	pop	bc
+   0254 C5                  471 	push	bc
+   0255 CB 21               472 	sla	c
+   0257 CB 10               473 	rl	b
+   0259 CB 21               474 	sla	c
+   025B CB 10               475 	rl	b
+   025D CB 21               476 	sla	c
+   025F CB 10               477 	rl	b
+   0261 F8 02               478 	ldhl	sp,#(3 - 1)
+   0263 5E                  479 	ld	e,(hl)
+   0264 23                  480 	inc	hl
+   0265 56                  481 	ld	d,(hl)
+   0266 CB 23               482 	sla	e
+   0268 CB 12               483 	rl	d
+   026A CB 23               484 	sla	e
+   026C CB 12               485 	rl	d
+   026E CB 23               486 	sla	e
+   0270 CB 12               487 	rl	d
+   0272 C5                  488 	push	bc
+   0273 D5                  489 	push	de
+   0274 AF                  490 	xor	a, a
+   0275 F5                  491 	push	af
+   0276 33                  492 	inc	sp
+   0277 CDr00r00            493 	call	_SpriteManagerAdd
+   027A E8 05               494 	add	sp, #5
+   027C 21r00r00            495 	ld	hl,#_scroll_target
+   027F 73                  496 	ld	(hl),e
+   0280 23                  497 	inc	hl
+   0281 72                  498 	ld	(hl),d
+                            499 ;StateGame.c:69: InitScrollTiles(0, 104, tiles, 3);
+   0282 21 00 00            500 	ld	hl,#0x0000
+   0285 E5                  501 	push	hl
+   0286 3E 03               502 	ld	a,#0x03
+   0288 F5                  503 	push	af
+   0289 33                  504 	inc	sp
+   028A 21r00r00            505 	ld	hl,#_tiles
+   028D E5                  506 	push	hl
+   028E 21 00 68            507 	ld	hl,#0x6800
+   0291 E5                  508 	push	hl
+   0292 CDr00r00            509 	call	_ZInitScrollTilesColor
+   0295 E8 07               510 	add	sp, #7
+                            511 ;StateGame.c:70: InitScroll(map4Width, map4Height, map4, collision_tiles, 0, 3);
+   0297 21 00 00            512 	ld	hl,#0x0000
+   029A E5                  513 	push	hl
+   029B 3E 03               514 	ld	a,#0x03
+   029D F5                  515 	push	af
+   029E 33                  516 	inc	sp
+   029F 2E 00               517 	ld	l, #0x00
+   02A1 E5                  518 	push	hl
+   02A2 21r01r00            519 	ld	hl,#_collision_tiles
+   02A5 E5                  520 	push	hl
+   02A6 21r00r00            521 	ld	hl,#_map4
+   02A9 E5                  522 	push	hl
+   02AA 21 12 00            523 	ld	hl,#0x0012
+   02AD E5                  524 	push	hl
+   02AE 2E 28               525 	ld	l, #0x28
+   02B0 E5                  526 	push	hl
+   02B1 CDr00r00            527 	call	_InitScrollColor
+   02B4 E8 0D               528 	add	sp, #13
+                            529 ;StateGame.c:71: SHOW_BKG;
+   02B6 11 40 FF            530 	ld	de,#0xff40
+   02B9 1A                  531 	ld	a,(de)
+   02BA 4F                  532 	ld	c,a
+   02BB 06 00               533 	ld	b,#0x00
+   02BD 79                  534 	ld	a,c
+   02BE CB C7               535 	set	0, a
+   02C0 4F                  536 	ld	c,a
+   02C1 21 40 FF            537 	ld	hl,#0xff40
+   02C4 71                  538 	ld	(hl),c
+   02C5                     539 00109$:
+                            540 ;StateGame.c:73: if (level > 4) {
+   02C5 3E 04               541 	ld	a,#0x04
+   02C7 21r00r00            542 	ld	hl,#_level
+   02CA 96                  543 	sub	a, (hl)
+   02CB 30 08               544 	jr	NC,00115$
+                            545 ;StateGame.c:74: SetState(STATE_WIN);
+   02CD 3E 04               546 	ld	a,#0x04
+   02CF F5                  547 	push	af
+   02D0 33                  548 	inc	sp
+   02D1 CDr00r00            549 	call	_SetState
+   02D4 33                  550 	inc	sp
+   02D5                     551 00115$:
+   02D5 E8 04               552 	add	sp, #4
+   02D7 C9                  553 	ret
+                            554 ;StateGame.c:80: void Update_STATE_GAME() {
+                            555 ;	---------------------------------
+                            556 ; Function Update_STATE_GAME
+                            557 ; ---------------------------------
+   02D8                     558 _Update_STATE_GAME::
+                            559 ;StateGame.c:81: }
+   02D8 C9                  560 	ret
+                            561 	.area _CODE_2
+                            562 	.area _CABS (ABS)

@@ -1,0 +1,169 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.6.0 #9615 (MINGW64)
+                              4 ;--------------------------------------------------------
+                              5 	.module StateWin
+                              6 	.optsdcc -mgbz80
+                              7 	
+                              8 ;--------------------------------------------------------
+                              9 ; Public variables in this module
+                             10 ;--------------------------------------------------------
+                             11 	.globl _PrintText
+                             12 	.globl _Printf
+                             13 	.globl _InitScrollColor
+                             14 	.globl _ZInitScrollTilesColor
+                             15 	.globl _SetState
+                             16 	.globl _bank_STATE_WIN
+                             17 	.globl _Start_STATE_WIN
+                             18 	.globl _Update_STATE_WIN
+                             19 ;--------------------------------------------------------
+                             20 ; ram data
+                             21 ;--------------------------------------------------------
+                             22 	.area _DATA
+   0000                      23 _bank_STATE_WIN::
+   0000                      24 	.ds 1
+                             25 ;--------------------------------------------------------
+                             26 ; absolute external ram data
+                             27 ;--------------------------------------------------------
+                             28 	.area _DABS (ABS)
+                             29 ;--------------------------------------------------------
+                             30 ; global & static initialisations
+                             31 ;--------------------------------------------------------
+                             32 	.area _HOME
+                             33 	.area _GSINIT
+                             34 	.area _GSFINAL
+                             35 	.area _GSINIT
+                             36 ;StateWin.c:3: UINT8 bank_STATE_WIN = 2;
+   0000 21r00r00             37 	ld	hl,#_bank_STATE_WIN
+   0003 36 02                38 	ld	(hl),#0x02
+                             39 ;--------------------------------------------------------
+                             40 ; Home
+                             41 ;--------------------------------------------------------
+                             42 	.area _HOME
+                             43 	.area _HOME
+                             44 ;--------------------------------------------------------
+                             45 ; code
+                             46 ;--------------------------------------------------------
+                             47 	.area _CODE_2
+                             48 ;StateWin.c:16: void PrintText() {
+                             49 ;	---------------------------------
+                             50 ; Function PrintText
+                             51 ; ---------------------------------
+   0000                      52 _PrintText::
+                             53 ;StateWin.c:17: PRINT_POS(5, 13);
+   0000 21r00r00             54 	ld	hl,#_print_x
+   0003 36 05                55 	ld	(hl),#0x05
+   0005 21r00r00             56 	ld	hl,#_print_y
+   0008 36 0D                57 	ld	(hl),#0x0d
+                             58 ;StateWin.c:18: Printf("THANKS FOR");
+   000A 21r27r00             59 	ld	hl,#___str_0
+   000D E5                   60 	push	hl
+   000E CDr00r00             61 	call	_Printf
+   0011 E8 02                62 	add	sp, #2
+                             63 ;StateWin.c:19: PRINT_POS(6, 14);
+   0013 21r00r00             64 	ld	hl,#_print_x
+   0016 36 06                65 	ld	(hl),#0x06
+   0018 21r00r00             66 	ld	hl,#_print_y
+   001B 36 0E                67 	ld	(hl),#0x0e
+                             68 ;StateWin.c:20: Printf("PLAYING!");
+   001D 21r32r00             69 	ld	hl,#___str_1
+   0020 E5                   70 	push	hl
+   0021 CDr00r00             71 	call	_Printf
+   0024 E8 02                72 	add	sp, #2
+   0026 C9                   73 	ret
+   0027                      74 ___str_0:
+   0027 54 48 41 4E 4B 53    75 	.ascii "THANKS FOR"
+        20 46 4F 52
+   0031 00                   76 	.db 0x00
+   0032                      77 ___str_1:
+   0032 50 4C 41 59 49 4E    78 	.ascii "PLAYING!"
+        47 21
+   003A 00                   79 	.db 0x00
+                             80 ;StateWin.c:23: void Start_STATE_WIN() {
+                             81 ;	---------------------------------
+                             82 ; Function Start_STATE_WIN
+                             83 ; ---------------------------------
+   003B                      84 _Start_STATE_WIN::
+                             85 ;StateWin.c:25: InitScrollTiles(0, 104, tiles, 3);
+   003B 21 00 00             86 	ld	hl,#0x0000
+   003E E5                   87 	push	hl
+   003F 3E 03                88 	ld	a,#0x03
+   0041 F5                   89 	push	af
+   0042 33                   90 	inc	sp
+   0043 21r00r00             91 	ld	hl,#_tiles
+   0046 E5                   92 	push	hl
+   0047 21 00 68             93 	ld	hl,#0x6800
+   004A E5                   94 	push	hl
+   004B CDr00r00             95 	call	_ZInitScrollTilesColor
+   004E E8 07                96 	add	sp, #7
+                             97 ;StateWin.c:26: InitScroll(victoryWidth, victoryHeight, victory, 0, 0, 3);
+   0050 21 00 00             98 	ld	hl,#0x0000
+   0053 E5                   99 	push	hl
+   0054 3E 03               100 	ld	a,#0x03
+   0056 F5                  101 	push	af
+   0057 33                  102 	inc	sp
+   0058 2E 00               103 	ld	l, #0x00
+   005A E5                  104 	push	hl
+   005B 2E 00               105 	ld	l, #0x00
+   005D E5                  106 	push	hl
+   005E 21r00r00            107 	ld	hl,#_victory
+   0061 E5                  108 	push	hl
+   0062 21 12 00            109 	ld	hl,#0x0012
+   0065 E5                  110 	push	hl
+   0066 2E 14               111 	ld	l, #0x14
+   0068 E5                  112 	push	hl
+   0069 CDr00r00            113 	call	_InitScrollColor
+   006C E8 0D               114 	add	sp, #13
+                            115 ;StateWin.c:27: SHOW_BKG;
+   006E 11 40 FF            116 	ld	de,#0xff40
+   0071 1A                  117 	ld	a,(de)
+   0072 4F                  118 	ld	c,a
+   0073 06 00               119 	ld	b,#0x00
+   0075 79                  120 	ld	a,c
+   0076 CB C7               121 	set	0, a
+   0078 4F                  122 	ld	c,a
+   0079 21 40 FF            123 	ld	hl,#0xff40
+   007C 71                  124 	ld	(hl),c
+                            125 ;StateWin.c:29: INIT_FONT(font, 3, PRINT_BKG);	
+   007D 21 00 00            126 	ld	hl,#0x0000
+   0080 E5                  127 	push	hl
+   0081 3E 03               128 	ld	a,#0x03
+   0083 F5                  129 	push	af
+   0084 33                  130 	inc	sp
+   0085 21r00r00            131 	ld	hl,#_font
+   0088 E5                  132 	push	hl
+   0089 21 D2 2D            133 	ld	hl,#0x2dd2
+   008C E5                  134 	push	hl
+   008D CDr00r00            135 	call	_ZInitScrollTilesColor
+   0090 E8 07               136 	add	sp, #7
+   0092 21r00r00            137 	ld	hl,#_font_idx
+   0095 36 D2               138 	ld	(hl),#0xd2
+   0097 21r00r00            139 	ld	hl,#_print_target
+   009A 36 00               140 	ld	(hl),#0x00
+                            141 ;StateWin.c:30: PrintText();
+   009C C3r00r00            142 	jp	_PrintText
+                            143 ;StateWin.c:33: void Update_STATE_WIN() {
+                            144 ;	---------------------------------
+                            145 ; Function Update_STATE_WIN
+                            146 ; ---------------------------------
+   009F                     147 _Update_STATE_WIN::
+                            148 ;StateWin.c:34: if (KEY_TICKED(J_START)) {
+   009F 21r00r00            149 	ld	hl,#_keys
+   00A2 4E                  150 	ld	c,(hl)
+   00A3 06 00               151 	ld	b,#0x00
+   00A5 CB 79               152 	bit	7, c
+   00A7 C8                  153 	ret	Z
+   00A8 21r00r00            154 	ld	hl,#_previous_keys
+   00AB 4E                  155 	ld	c,(hl)
+   00AC 06 00               156 	ld	b,#0x00
+   00AE CB 79               157 	bit	7, c
+   00B0 C0                  158 	ret	NZ
+                            159 ;StateWin.c:35: SetState(STATE_START);
+   00B1 3E 01               160 	ld	a,#0x01
+   00B3 F5                  161 	push	af
+   00B4 33                  162 	inc	sp
+   00B5 CDr00r00            163 	call	_SetState
+   00B8 33                  164 	inc	sp
+   00B9 C9                  165 	ret
+                            166 	.area _CODE_2
+                            167 	.area _CABS (ABS)

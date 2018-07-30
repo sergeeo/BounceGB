@@ -1,0 +1,68 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy Z80-like CPU), page 1.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =  2710 L
+    .__.ABS.                                                    =  0000 G
+    .__.CPU.                                                    =  0000 L
+    .__.H$L.                                                    =  0000 L
+    _Destroy_SPRITE_EXPLOSION                                      **** GX
+    _Destroy_SPRITE_PLAYERLITTLE                                   **** GX
+    _InitSpriteInfo                                                **** GX
+  6 _InitSprites                                                   0079 GR
+  6 _InitStates                                                    0000 GR
+    _Start_SPRITE_EXPLOSION                                        **** GX
+    _Start_SPRITE_PLAYERLITTLE                                     **** GX
+    _Start_STATE_GAME                                              **** GX
+    _Start_STATE_GAMEOVER                                          **** GX
+    _Start_STATE_LIFES                                             **** GX
+    _Start_STATE_START                                             **** GX
+    _Start_STATE_WIN                                               **** GX
+    _Update_SPRITE_EXPLOSION                                       **** GX
+    _Update_SPRITE_PLAYERLITTLE                                    **** GX
+    _Update_STATE_GAME                                             **** GX
+    _Update_STATE_GAMEOVER                                         **** GX
+    _Update_STATE_LIFES                                            **** GX
+    _Update_STATE_START                                            **** GX
+    _Update_STATE_WIN                                              **** GX
+    _bank_SPRITE_EXPLOSION                                         **** GX
+    _bank_SPRITE_PLAYERLITTLE                                      **** GX
+    _bank_STATE_GAME                                               **** GX
+    _bank_STATE_GAMEOVER                                           **** GX
+    _bank_STATE_LIFES                                              **** GX
+    _bank_STATE_START                                              **** GX
+    _bank_STATE_WIN                                                **** GX
+    _explosion                                                     **** GX
+  1 _init_bank                                                     0000 GR
+  1 _n_sprite_types                                                0035 GR
+  1 _next_state                                                    0001 GR
+    _playerlittle                                                  **** GX
+  1 _spriteBanks                                                   001B GR
+  1 _spriteDataBanks                                               002D GR
+  1 _spriteDatas                                                   0029 GR
+  1 _spriteDestroyFuncs                                            0025 GR
+  1 _spriteFrameSizes                                              002F GR
+  1 _spriteIdxs                                                    0033 GR
+  1 _spriteNumFrames                                               0031 GR
+  1 _spritePalDatas                                                0036 GR
+  1 _spriteStartFuncs                                              001D GR
+  1 _spriteUpdateFuncs                                             0021 GR
+  1 _startFuncs                                                    0007 GR
+  1 _stateBanks                                                    0002 GR
+  1 _updateFuncs                                                   0011 GR
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy Z80-like CPU), page 2.
+Hexadecimal [16-Bits]
+
+Area Table
+
+   0 _CODE                                      size    0   flags    0
+   1 _DATA                                      size   3A   flags    0
+   2 _DABS                                      size    0   flags    8
+   3 _HOME                                      size    0   flags    0
+   4 _GSINIT                                    size    F   flags    0
+   5 _GSFINAL                                   size    0   flags    0
+   6 _CODE_1                                    size   CF   flags    0
+   7 _CABS                                      size    0   flags    8
+

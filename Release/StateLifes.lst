@@ -1,0 +1,241 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.6.0 #9615 (MINGW64)
+                              4 ;--------------------------------------------------------
+                              5 	.module StateLifes
+                              6 	.optsdcc -mgbz80
+                              7 	
+                              8 ;--------------------------------------------------------
+                              9 ; Public variables in this module
+                             10 ;--------------------------------------------------------
+                             11 	.globl _PrintText
+                             12 	.globl _Printf
+                             13 	.globl _InitScrollColor
+                             14 	.globl _ZInitScrollTilesColor
+                             15 	.globl _PlayMusic
+                             16 	.globl _SetState
+                             17 	.globl _bank_STATE_LIFES
+                             18 	.globl _Start_STATE_LIFES
+                             19 	.globl _Update_STATE_LIFES
+                             20 ;--------------------------------------------------------
+                             21 ; ram data
+                             22 ;--------------------------------------------------------
+                             23 	.area _DATA
+   0000                      24 _bank_STATE_LIFES::
+   0000                      25 	.ds 1
+                             26 ;--------------------------------------------------------
+                             27 ; absolute external ram data
+                             28 ;--------------------------------------------------------
+                             29 	.area _DABS (ABS)
+                             30 ;--------------------------------------------------------
+                             31 ; global & static initialisations
+                             32 ;--------------------------------------------------------
+                             33 	.area _HOME
+                             34 	.area _GSINIT
+                             35 	.area _GSFINAL
+                             36 	.area _GSINIT
+                             37 ;StateLifes.c:3: UINT8 bank_STATE_LIFES = 2;
+   0000 21r00r00             38 	ld	hl,#_bank_STATE_LIFES
+   0003 36 02                39 	ld	(hl),#0x02
+                             40 ;--------------------------------------------------------
+                             41 ; Home
+                             42 ;--------------------------------------------------------
+                             43 	.area _HOME
+                             44 	.area _HOME
+                             45 ;--------------------------------------------------------
+                             46 ; code
+                             47 ;--------------------------------------------------------
+                             48 	.area _CODE_2
+                             49 ;StateLifes.c:18: void PrintText() {
+                             50 ;	---------------------------------
+                             51 ; Function PrintText
+                             52 ; ---------------------------------
+   0000                      53 _PrintText::
+                             54 ;StateLifes.c:19: PRINT_POS(3, 3);
+   0000 21r00r00             55 	ld	hl,#_print_x
+   0003 36 03                56 	ld	(hl),#0x03
+   0005 21r00r00             57 	ld	hl,#_print_y
+   0008 36 03                58 	ld	(hl),#0x03
+                             59 ;StateLifes.c:20: Printf("THAT WAS CLOSE");
+   000A 21r69r00             60 	ld	hl,#___str_0
+   000D E5                   61 	push	hl
+   000E CDr00r00             62 	call	_Printf
+   0011 E8 02                63 	add	sp, #2
+                             64 ;StateLifes.c:21: PRINT_POS(7, 4);
+   0013 21r00r00             65 	ld	hl,#_print_x
+   0016 36 07                66 	ld	(hl),#0x07
+   0018 21r00r00             67 	ld	hl,#_print_y
+   001B 36 04                68 	ld	(hl),#0x04
+                             69 ;StateLifes.c:22: Printf("BUDDY");
+   001D 21r78r00             70 	ld	hl,#___str_1
+   0020 E5                   71 	push	hl
+   0021 CDr00r00             72 	call	_Printf
+   0024 E8 02                73 	add	sp, #2
+                             74 ;StateLifes.c:23: if (lifes > 1) {
+   0026 3E 01                75 	ld	a,#0x01
+   0028 21r00r00             76 	ld	hl,#_lifes
+   002B 96                   77 	sub	a, (hl)
+   002C 30 1A                78 	jr	NC,00102$
+                             79 ;StateLifes.c:24: PRINT_POS(4, 14);
+   002E 21r00r00             80 	ld	hl,#_print_x
+   0031 36 04                81 	ld	(hl),#0x04
+   0033 21r00r00             82 	ld	hl,#_print_y
+   0036 36 0E                83 	ld	(hl),#0x0e
+                             84 ;StateLifes.c:25: Printf("%d LIFES LEFT", lifes);
+   0038 21r00r00             85 	ld	hl,#_lifes
+   003B 4E                   86 	ld	c,(hl)
+   003C 06 00                87 	ld	b,#0x00
+   003E C5                   88 	push	bc
+   003F 21r7Er00             89 	ld	hl,#___str_2
+   0042 E5                   90 	push	hl
+   0043 CDr00r00             91 	call	_Printf
+   0046 E8 04                92 	add	sp, #4
+   0048                      93 00102$:
+                             94 ;StateLifes.c:27: if (lifes == 1) {
+   0048 21r00r00             95 	ld	hl,#_lifes
+   004B 7E                   96 	ld	a,(hl)
+   004C 3D                   97 	dec	a
+   004D C0                   98 	ret	NZ
+                             99 ;StateLifes.c:28: PRINT_POS(4, 14);
+   004E 21r00r00            100 	ld	hl,#_print_x
+   0051 36 04               101 	ld	(hl),#0x04
+   0053 21r00r00            102 	ld	hl,#_print_y
+   0056 36 0E               103 	ld	(hl),#0x0e
+                            104 ;StateLifes.c:29: Printf("%d LIFE LEFT!", lifes);
+   0058 21r00r00            105 	ld	hl,#_lifes
+   005B 4E                  106 	ld	c,(hl)
+   005C 06 00               107 	ld	b,#0x00
+   005E C5                  108 	push	bc
+   005F 21r8Cr00            109 	ld	hl,#___str_3
+   0062 E5                  110 	push	hl
+   0063 CDr00r00            111 	call	_Printf
+   0066 E8 04               112 	add	sp, #4
+   0068 C9                  113 	ret
+   0069                     114 ___str_0:
+   0069 54 48 41 54 20 57   115 	.ascii "THAT WAS CLOSE"
+        41 53 20 43 4C 4F
+        53 45
+   0077 00                  116 	.db 0x00
+   0078                     117 ___str_1:
+   0078 42 55 44 44 59      118 	.ascii "BUDDY"
+   007D 00                  119 	.db 0x00
+   007E                     120 ___str_2:
+   007E 25 64 20 4C 49 46   121 	.ascii "%d LIFES LEFT"
+        45 53 20 4C 45 46
+        54
+   008B 00                  122 	.db 0x00
+   008C                     123 ___str_3:
+   008C 25 64 20 4C 49 46   124 	.ascii "%d LIFE LEFT!"
+        45 20 4C 45 46 54
+        21
+   0099 00                  125 	.db 0x00
+                            126 ;StateLifes.c:33: void Start_STATE_LIFES() {
+                            127 ;	---------------------------------
+                            128 ; Function Start_STATE_LIFES
+                            129 ; ---------------------------------
+   009A                     130 _Start_STATE_LIFES::
+                            131 ;StateLifes.c:34: PlayMusic(gameovermusic_mod_Data, 3, 1);
+   009A 21 03 01            132 	ld	hl,#0x0103
+   009D E5                  133 	push	hl
+   009E 21r00r00            134 	ld	hl,#_gameovermusic_mod_Data
+   00A1 E5                  135 	push	hl
+   00A2 CDr00r00            136 	call	_PlayMusic
+   00A5 E8 04               137 	add	sp, #4
+                            138 ;StateLifes.c:36: InitScrollTiles(0, 104, tiles, 3);
+   00A7 21 00 00            139 	ld	hl,#0x0000
+   00AA E5                  140 	push	hl
+   00AB 3E 03               141 	ld	a,#0x03
+   00AD F5                  142 	push	af
+   00AE 33                  143 	inc	sp
+   00AF 21r00r00            144 	ld	hl,#_tiles
+   00B2 E5                  145 	push	hl
+   00B3 21 00 68            146 	ld	hl,#0x6800
+   00B6 E5                  147 	push	hl
+   00B7 CDr00r00            148 	call	_ZInitScrollTilesColor
+   00BA E8 07               149 	add	sp, #7
+                            150 ;StateLifes.c:37: InitScroll(lifesleftWidth, lifesleftHeight, lifesleft, 0, 0, 3);
+   00BC 21 00 00            151 	ld	hl,#0x0000
+   00BF E5                  152 	push	hl
+   00C0 3E 03               153 	ld	a,#0x03
+   00C2 F5                  154 	push	af
+   00C3 33                  155 	inc	sp
+   00C4 2E 00               156 	ld	l, #0x00
+   00C6 E5                  157 	push	hl
+   00C7 2E 00               158 	ld	l, #0x00
+   00C9 E5                  159 	push	hl
+   00CA 21r00r00            160 	ld	hl,#_lifesleft
+   00CD E5                  161 	push	hl
+   00CE 21 12 00            162 	ld	hl,#0x0012
+   00D1 E5                  163 	push	hl
+   00D2 2E 14               164 	ld	l, #0x14
+   00D4 E5                  165 	push	hl
+   00D5 CDr00r00            166 	call	_InitScrollColor
+   00D8 E8 0D               167 	add	sp, #13
+                            168 ;StateLifes.c:38: SHOW_BKG;
+   00DA 11 40 FF            169 	ld	de,#0xff40
+   00DD 1A                  170 	ld	a,(de)
+   00DE 4F                  171 	ld	c,a
+   00DF 06 00               172 	ld	b,#0x00
+   00E1 79                  173 	ld	a,c
+   00E2 CB C7               174 	set	0, a
+   00E4 4F                  175 	ld	c,a
+   00E5 21 40 FF            176 	ld	hl,#0xff40
+   00E8 71                  177 	ld	(hl),c
+                            178 ;StateLifes.c:39: if (lifes > 0) {
+   00E9 21r00r00            179 	ld	hl,#_lifes
+   00EC 7E                  180 	ld	a,(hl)
+   00ED B7                  181 	or	a, a
+   00EE 28 01               182 	jr	Z,00102$
+                            183 ;StateLifes.c:40: lifes = lifes - 1;
+   00F0 35                  184 	dec	(hl)
+   00F1                     185 00102$:
+                            186 ;StateLifes.c:42: INIT_FONT(font, 3, PRINT_BKG);
+   00F1 21 00 00            187 	ld	hl,#0x0000
+   00F4 E5                  188 	push	hl
+   00F5 3E 03               189 	ld	a,#0x03
+   00F7 F5                  190 	push	af
+   00F8 33                  191 	inc	sp
+   00F9 21r00r00            192 	ld	hl,#_font
+   00FC E5                  193 	push	hl
+   00FD 21 D2 2D            194 	ld	hl,#0x2dd2
+   0100 E5                  195 	push	hl
+   0101 CDr00r00            196 	call	_ZInitScrollTilesColor
+   0104 E8 07               197 	add	sp, #7
+   0106 21r00r00            198 	ld	hl,#_font_idx
+   0109 36 D2               199 	ld	(hl),#0xd2
+   010B 21r00r00            200 	ld	hl,#_print_target
+   010E 36 00               201 	ld	(hl),#0x00
+                            202 ;StateLifes.c:43: PrintText();
+   0110 C3r00r00            203 	jp	_PrintText
+                            204 ;StateLifes.c:47: void Update_STATE_LIFES() {
+                            205 ;	---------------------------------
+                            206 ; Function Update_STATE_LIFES
+                            207 ; ---------------------------------
+   0113                     208 _Update_STATE_LIFES::
+                            209 ;StateLifes.c:48: if (keys) {
+   0113 21r00r00            210 	ld	hl,#_keys
+   0116 7E                  211 	ld	a,(hl)
+   0117 B7                  212 	or	a, a
+   0118 C8                  213 	ret	Z
+                            214 ;StateLifes.c:49: if (lifes > 0)
+   0119 21r00r00            215 	ld	hl,#_lifes
+   011C 7E                  216 	ld	a,(hl)
+   011D B7                  217 	or	a, a
+   011E 28 08               218 	jr	Z,00102$
+                            219 ;StateLifes.c:51: SetState(STATE_GAME);
+   0120 AF                  220 	xor	a, a
+   0121 F5                  221 	push	af
+   0122 33                  222 	inc	sp
+   0123 CDr00r00            223 	call	_SetState
+   0126 33                  224 	inc	sp
+   0127 C9                  225 	ret
+   0128                     226 00102$:
+                            227 ;StateLifes.c:54: SetState(STATE_GAMEOVER);
+   0128 3E 03               228 	ld	a,#0x03
+   012A F5                  229 	push	af
+   012B 33                  230 	inc	sp
+   012C CDr00r00            231 	call	_SetState
+   012F 33                  232 	inc	sp
+   0130 C9                  233 	ret
+                            234 	.area _CODE_2
+                            235 	.area _CABS (ABS)
